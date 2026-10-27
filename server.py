@@ -32,7 +32,7 @@ def snapshot(role):
     reader=str(page%2+1) if page<len(PAGES) else None
     w=STATE["world1"]
     stage="search" if len(w["found"])<6 or len(w["numbers"])<6 else "solve" if not all(w["answers"].values()) else "envelope" if not all(w["envelope"].values()) else "finished"
-    return {"world1":{"stage":stage,"found":w["found"],"numbers":w["numbers"] if role=="2" else {},"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
+    return {"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"] if role=="2" else {},"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def reply(self,obj,status=200,html=False):
