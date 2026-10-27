@@ -15,7 +15,7 @@ let rejected=[];
 function toggleReject(name){rejected=rejected.includes(name)?rejected.filter(x=>x!==name):rejected.length<2?[...rejected,name]:rejected;document.querySelectorAll('[data-reject]').forEach(b=>b.classList.toggle('selected',rejected.includes(b.dataset.reject)));document.querySelector('#reject-count').textContent=rejected.length+'/2'}
 function confirmReject(){if(rejected.length!==2){notice.textContent='Wybierz dokładnie dwie bestie.';return}action('/api/world1/eliminate',{beasts:rejected})}
 function sendSeal(){action('/api/world1/answer',{code:document.querySelector('#seal').value})}
-function finishEnvelope(){action('/api/world1/envelope')}
+function finishEnvelope(){action('/api/world1/envelope',{code:document.querySelector('#envelope-code').value})}
 function create(){action('/api/create',{name:document.querySelector('#name').value,race,avatar})}
 function format(s){return [Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(v=>String(v).padStart(2,'0')).join(':')}
 function render(d){
@@ -49,7 +49,7 @@ function render(d){
  content+=w.answers[role]?'<div class="status">✔ Twoja pieczęć przyjęta. Czekamy na partnerkę.</div>':'<h2>Wpisz czterocyfrowy kod</h2><input id="seal" type="text" inputmode="numeric" maxlength="4" placeholder="□□□□"><button onclick="sendSeal()">ZŁAM PIECZĘĆ</button>';
  }else{
  content+='<h2>🔓 PIERWSZA PIECZĘĆ ZŁAMANA!</h2><div class="status center" style="font-size:32px">ODKRYTY KOD: <strong>7219</strong></div><div class="paper">Dobrze. Jedna z siedmiu pieczęci została złamana. Ale Morthar już wie, że tu jesteście. Nie traćcie czasu.\n\n<b>W tym świecie pozostało coś jeszcze.</b>\n\nW tym domu istnieje miejsce, które codziennie przyjmuje gości, choć nigdy nie otwiera drzwi. Nie ma ust, a mimo to potrafi pochłaniać drobne skarby. Nie ma rąk, lecz zatrzymuje to, co nieostrożnie pozostawisz w jego pobliżu. Zmęczeni wędrowcy szukają u niego odpoczynku, a ci, którzy zasną, mogą obudzić się w zupełnie innej pozycji. Morthar ukrył tam fragment pierwszej Pieczęci. Nie szukajcie go jednak tam, gdzie najwygodniej usiąść. Prawdziwe tajemnice kryją się w miejscach, do których rzadko zagląda światło. Odnajdźcie strażnika odpoczynku i zajrzyjcie w jego najciemniejsze zakamarki.</div><p>Odnajdźcie kopertę oznaczoną numerem 1 i zachowajcie jej zawartość do finału.</p>';
- if(stage==='envelope'){content+=w.envelope[role]?'<div class="status">✔ Potwierdzono. Czekamy na partnerkę.</div>':'<button onclick="finishEnvelope()">MAM FRAGMENT PIECZĘCI NR 1</button>'}
+ if(stage==='envelope'){content+=w.envelope[role]?'<div class="status">✔ Potwierdzono. Czekamy na partnerkę.</div>':'<h2>🔏 Tajny kod z koperty nr 1</h2><p>Znajdźcie fizyczną Pieczęć w kopercie i odczytajcie umieszczony na niej kod. Każda Strażniczka wpisuje go osobno.</p><input id="envelope-code" type="text" maxlength="24" placeholder="Kod z koperty" autocomplete="off"><button onclick="finishEnvelope()">SPRAWDŹ KOD PIECZĘCI</button>'}
  else{content+='<div class="status">✔ Obie Strażniczki potwierdziły odnalezienie fragmentu nr 1.</div><h2>ŚWIAT II — GALERIA LUSTRZANYCH SZEPTÓW</h2><p>📍 SYPIALNIA. Możecie przejść do następnego pomieszczenia. Zagadki tego świata dodamy w kolejnym etapie.</p>'}
  }
  app.innerHTML=head+content;
