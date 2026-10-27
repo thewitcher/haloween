@@ -70,7 +70,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not STATE["started_at"] or role!="2": return self.reply({"error":"Ta czynność należy do Strażniczki II"},403)
                 beast=str(data.get("beast","")); number=str(data.get("number","")).strip()
                 if beast not in w["found"]: return self.reply({"error":"Najpierw znajdźcie tę bestię"},409)
-                if number!=BEASTS.get(beast): return self.reply({"error":"Cyfra nie pasuje do bestii. Sprawdźcie odwrotną stronę karty."},409)
+                if number!=BEASTS.get(beast): return self.reply({"error":"Cyfra nie pasuje do bestii. Sprawdźcie cyfrę na karcie."},409)
                 w["numbers"][beast]=number; save(); return self.reply({"ok":True})
             if path=="/api/world1/answer":
                 if not STATE["started_at"] or len(w["found"])!=6 or len(w["numbers"])!=6: return self.reply({"error":"Najpierw zbierzcie sześć bestii i cyfr"},409)
