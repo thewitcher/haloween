@@ -4,7 +4,7 @@
 
 ## Przygotuj
 
-Wydrukuj sześć osobnych kart bestii. Na przedniej stronie napisz wielką nazwę bestii (możesz dorysować postać), a na odwrocie tylko przypisaną cyfrę:
+Wydrukuj sześć osobnych kart bestii. Na każdej karcie umieść nazwę bestii, ilustrację i przypisaną cyfrę **na tej samej stronie**, tak aby można było wydrukować karty jednostronnie:
 
 | Bestia | Cyfra na odwrocie |
 |---|---|
@@ -23,7 +23,7 @@ Przygotuj również **kopertę nr 1** z pierwszym fragmentem finałowych puzzli 
 
 1. Po wspólnej przysiędze rozpoczyna się zegar 120 minut i gra w salonie.
 2. Strażniczka I ma listę sześciu bestii w kolejności **innej niż prawidłowy kod**. Zaznacza znalezione karty.
-3. Strażniczka II wpisuje cyfry z odwrotów kart. Błędne cyfry są odrzucane.
+3. Strażniczka II wpisuje cyfry z kart. Błędne cyfry są odrzucane.
 4. Po znalezieniu sześciu kart i zapisaniu wszystkich cyfr na tablecie Strażniczki II pojawiają się zagadki i zasady kolejności. Czyta je partnerce.
 5. Cztery prawdziwe bestie to Wampir, Wilkołak, Duch i Mumia; pozostałe są fałszywe.
 6. Logiczna kolejność: Wampir → Wilkołak → Duch → Mumia. **Kod dla Mistrza Gry: 7219.**
