@@ -9,6 +9,10 @@ async function action(path,payload={}){if(busy)return;busy=true;try{await api(pa
 function chooseRole(n){role=String(n);localStorage.setItem('sw_role',role);lastKey='';refresh()}
 function setRace(v){race=v;document.querySelectorAll('[data-race]').forEach(b=>b.classList.toggle('selected',b.dataset.race===v))}
 function setAvatar(v){avatar=v;document.querySelectorAll('[data-avatar]').forEach(b=>b.classList.toggle('selected',b.dataset.avatar===v))}
+function findBeast(name){action('/api/world1/find',{beast:name})}
+function saveNumber(name){const input=document.getElementById('num-'+name);action('/api/world1/number',{beast:name,number:input.value})}
+function sendSeal(){action('/api/world1/answer',{code:document.querySelector('#seal').value})}
+function finishEnvelope(){action('/api/world1/envelope')}
 function create(){action('/api/create',{name:document.querySelector('#name').value,race,avatar})}
 function format(s){return [Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(v=>String(v).padStart(2,'0')).join(':')}
 function render(d){
@@ -18,7 +22,31 @@ function render(d){
  if(d.phase==='waiting'){app.innerHTML=head+'<h2>Twoja postać jest gotowa!</h2><p>⏳ Czekamy, aż druga Strażniczka stworzy swoją postać...</p>';return}
  if(d.phase==='story'){const reading=d.reader===role;app.innerHTML=head+(reading?'<div class="status">📖 Twoja kolej! Przeczytaj NA GŁOS. · '+(d.page_index+1)+'/6</div><h2>'+esc(d.page.title)+'</h2><div class="paper">'+esc(d.page.text)+'</div><button onclick="action(\'/api/next\')">Przeczytałam — przekaż opowieść dalej →</button>':'<div class="status">📚 Czyta '+esc(d.players[d.reader]?.name||'druga Strażniczka')+'</div><h2>Posłuchaj opowieści...</h2><p>Nie widzisz jej fragmentu. Posłuchaj uważnie, co przeczyta druga Strażniczka.</p>');return}
  if(d.phase==='oath'){const txt=role==='1'?'Przysięgam strzec światła, nawet gdy pochłonie je ciemność.':'Przysięgam strzec czasu, nawet gdy zegar przestanie bić.';app.innerHTML=head+'<h2>📜 Przysięga Strażniczek</h2><p>Przeczytaj na głos:</p><div class="paper">„'+txt+'”</div>'+(d.oaths[role]?'<div class="status">✔ Przysięga przyjęta. Czekamy na drugą Strażniczkę...</div>':'<p><label><input id="agree" type="checkbox"> Poznałam Siedem Praw i przysięgam ich przestrzegać.</label></p><button onclick="if(document.querySelector(\'#agree\').checked)action(\'/api/oath\');else notice.textContent=\'Zaznacz potwierdzenie.\'">SKŁADAM PRZYSIĘGĘ</button>');return}
- if(d.phase==='playing'){app.innerHTML=head+'<h2 class="center">⏳ ZEGAR MORTHARA</h2><div class="timer">'+format(d.remaining)+'</div><h2 class="center">ŚWIAT I — KRYPTA SZEŚCIU BESTII</h2><p class="center">📍 SALON</p><div class="paper">Pierwsza pieczęć czeka. Sześć bestii ukryło się w tym pomieszczeniu. Cztery powiedzą wam prawdę. Dwie spróbują was oszukać.</div><div class="status">✔ Wprowadzenie ukończone. Zagadki dodamy w kolejnym etapie.</div>'}
+ if(d.phase==='playing'){
+ const w=d.world1,found=w.found,stage=w.stage;
+ let content='<h2 class="center">⏳ ZEGAR MORTHARA</h2><div class="timer">'+format(d.remaining)+'</div><h2 class="center">ŚWIAT I — KRYPTA SZEŚCIU BESTII</h2><p class="center">📍 SALON · 15–20 minut</p><div class="paper">Morthar nie podróżował sam. Kiedy Komnata Cienia została zamknięta, sześć bestii uciekło i ukryło się w tym świecie. Wszystkie wciąż tu są. Znajdźcie je. Sześć bestii. Sześć liczb. Ale tylko cztery powiedzą wam prawdę.</div>';
+ if(stage==='search'){
+ content+='<div class="status">Odnalezione bestie: '+found.length+'/6 · Spisane cyfry: '+Object.keys(w.numbers).length+'/6</div>';
+ if(role==='1'){
+ content+='<h2>🔦 Strażniczka I — Łowczyni Bestii</h2><p>Przeszukajcie salon. Gdy znajdziecie papierową bestię, zaznacz ją tutaj i przekaż drugiej Strażniczce cyfrę z odwrotu.</p>';
+ content+=w.search_order.map(b=>'<button class="tile '+(found.includes(b)?'selected':'')+'" '+(found.includes(b)?'disabled':'')+' onclick="findBeast(\''+b+'\')">'+esc(b)+' '+(found.includes(b)?'✔':'○')+'</button>').join('');
+ }else{
+ content+='<h2>📜 Strażniczka II — Kronikarka Cyfr</h2><p>Nie widzisz listy kryjówek. Słuchaj partnerki, zapisuj cyfry z odwrotu odnalezionych kart i zatwierdzaj je.</p>';
+ content+=found.map(b=>'<div class="status">'+esc(b)+' '+(w.numbers[b]?'✔ cyfra zapisana':'<input style="width:90px" id="num-'+b+'" type="text" inputmode="numeric" maxlength="1" placeholder="0"><button onclick="saveNumber(\''+b+'\')">Zapisz</button>')+'</div>').join('');
+ }
+ content+='<p class="muted">Dopiero po odnalezieniu wszystkich sześciu bestii i zapisaniu ich cyfr Morthar ujawni kolejną próbę.</p>';
+ }else if(stage==='solve'){
+ content+='<h2>🔐 Cztery prawdziwe bestie</h2><p>Wiedźma i Kościotrup służą Mortharowi. Tylko cztery inne bestie tworzą pieczęć.</p>';
+ if(role==='2'){content+='<div class="paper"><b>Zagadki z Kroniki Bestii:</b>\n\n1. Nie żyję, lecz budzę się nocą. Słońce jest moim wrogiem, a kiedy jestem głodny, patrzę na twoją szyję.\n\n2. Kiedy księżyc staje się okrągły, człowiek przestaje być człowiekiem.\n\n3. Nie mam ciała, ale czasem zostawiam ślady. Możesz mnie zobaczyć, lecz nie możesz mnie złapać.\n\n4. Umarłem bardzo dawno temu. Owinięto mnie, żebym mógł czekać wiecznie.\n\n<b>Prawo kolejności:</b> Pierwszy boi się słońca. Ostatni został przygotowany do wieczności. Ten, który pojawia się przy pełni, stoi przed tym, którego można zobaczyć, lecz nie dotknąć.</div><p>Przeczytaj zagadki partnerce i wspólnie ustalcie kolejność.</p>'}
+ else{content+='<div class="paper"><b>Twoja karta odnalezionych bestii:</b>\n\n'+w.search_order.map(b=>b+' — '+(w.numbers[b]||'cyfra zapisana u partnerki')).join('\n')+'</div><p>Druga Strażniczka ma zagadki i reguły kolejności. Wysłuchaj ich. Ułóżcie razem czterocyfrową pieczęć.</p>'}
+ content+=w.answers[role]?'<div class="status">✔ Twoja pieczęć przyjęta. Czekamy na partnerkę.</div>':'<h2>Wpisz czterocyfrowy kod</h2><input id="seal" type="text" inputmode="numeric" maxlength="4" placeholder="□□□□"><button onclick="sendSeal()">ZŁAM PIECZĘĆ</button>';
+ }else{
+ content+='<h2>🔓 PIERWSZA PIECZĘĆ ZŁAMANA!</h2><div class="status center" style="font-size:32px">ODKRYTY KOD: <strong>7219</strong></div><div class="paper">Dobrze. Jedna z siedmiu pieczęci została złamana. Ale Morthar już wie, że tu jesteście. Nie traćcie czasu.\n\n<b>W tym świecie pozostało coś jeszcze.</b>\n\nTam, gdzie miękkie pożera zmęczonych, a zagubione monety znikają między szczelinami.</div><p>Odnajdźcie kopertę oznaczoną numerem 1 i zachowajcie jej zawartość do finału.</p>';
+ if(stage==='envelope'){content+=w.envelope[role]?'<div class="status">✔ Potwierdzono. Czekamy na partnerkę.</div>':'<button onclick="finishEnvelope()">MAM FRAGMENT PIECZĘCI NR 1</button>'}
+ else{content+='<div class="status">✔ Obie Strażniczki potwierdziły odnalezienie fragmentu nr 1.</div><h2>ŚWIAT II — GALERIA LUSTRZANYCH SZEPTÓW</h2><p>📍 SYPIALNIA. Możecie przejść do następnego pomieszczenia. Zagadki tego świata dodamy w kolejnym etapie.</p>'}
+ }
+ app.innerHTML=head+content;
+ }
 }
 async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
 refresh();setInterval(refresh,1000);
