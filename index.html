@@ -48,6 +48,6 @@ function render(d){
  app.innerHTML=head+content;
  }
 }
-async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
+async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name,d.world1.stage,d.world1.found.join(','),d.world1.number_count,d.world1.answers['1'],d.world1.answers['2'],d.world1.envelope['1'],d.world1.envelope['2']].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
 refresh();setInterval(refresh,1000);
 </script></body></html>
