@@ -28,10 +28,10 @@ function render(d){
  if(stage==='search'){
  content+='<div class="status">Odnalezione bestie: '+found.length+'/6 · Spisane cyfry: '+Object.keys(w.numbers).length+'/6</div>';
  if(role==='1'){
- content+='<h2>🔦 Strażniczka I — Łowczyni Bestii</h2><p>Przeszukajcie salon. Gdy znajdziecie papierową bestię, zaznacz ją tutaj i przekaż drugiej Strażniczce cyfrę z odwrotu.</p>';
+ content+='<h2>🔦 Strażniczka I — Łowczyni Bestii</h2><p>Przeszukajcie salon. Gdy znajdziecie papierową bestię, zaznacz ją tutaj i przekaż drugiej Strażniczce cyfrę z tej samej strony karty.</p>';
  content+=w.search_order.map(b=>'<button class="tile '+(found.includes(b)?'selected':'')+'" '+(found.includes(b)?'disabled':'')+' onclick="findBeast(\''+b+'\')">'+esc(b)+' '+(found.includes(b)?'✔':'○')+'</button>').join('');
  }else{
- content+='<h2>📜 Strażniczka II — Kronikarka Cyfr</h2><p>Nie widzisz listy kryjówek. Słuchaj partnerki, zapisuj cyfry z odwrotu odnalezionych kart i zatwierdzaj je.</p>';
+ content+='<h2>📜 Strażniczka II — Kronikarka Cyfr</h2><p>Nie widzisz listy kryjówek. Słuchaj partnerki, zapisuj cyfry z kart odnalezionych kart i zatwierdzaj je.</p>';
  content+=found.map(b=>'<div class="status">'+esc(b)+' '+(w.numbers[b]?'✔ cyfra zapisana':'<input style="width:90px" id="num-'+b+'" type="text" inputmode="numeric" maxlength="1" placeholder="0"><button onclick="saveNumber(\''+b+'\')">Zapisz</button>')+'</div>').join('');
  }
  content+='<p class="muted">Dopiero po odnalezieniu wszystkich sześciu bestii i zapisaniu ich cyfr Morthar ujawni kolejną próbę.</p>';
