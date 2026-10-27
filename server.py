@@ -20,6 +20,7 @@ PAGES=[
 RACES=["Elfka Księżyca","Wampirzyca","Wróżka Cieni","Czarownica"]
 AVATARS=["🌙","🦇","🧚","🔮","🐈‍⬛","🕯️","🦉","✨"]
 BEASTS={"Wampir":"7","Wilkołak":"2","Mumia":"9","Wiedźma":"4","Duch":"1","Kościotrup":"6"}
+ENVELOPE_CODE="KRUK-583"
 SEARCH_ORDER=["Kościotrup","Duch","Wiedźma","Mumia","Wampir","Wilkołak"]
 def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}}}
 try: STATE=json.loads(SAVE.read_text(encoding="utf-8"))
@@ -85,6 +86,7 @@ class Handler(BaseHTTPRequestHandler):
                 w["answers"][role]=True; save(); return self.reply({"ok":True})
             if path=="/api/world1/envelope":
                 if not all(w["answers"].values()): return self.reply({"error":"Obie Strażniczki muszą złamać pieczęć"},409)
+                if str(data.get("code","")).strip().upper()!=ENVELOPE_CODE: return self.reply({"error":"Niepoprawny kod z koperty"},409)
                 w["envelope"][role]=True; save(); return self.reply({"ok":True})
             if path=="/api/create":
                 if STATE["players"][role] or STATE["page"] or STATE["started_at"]: return self.reply({"error":"Postać już zapisana"},409)
