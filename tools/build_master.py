@@ -236,12 +236,32 @@ def build_handouts(dst):
   labelparts.extend([('table',tbl([[f'✦ KOPERTA {row[0]}',f'✦ KOPERTA {row[1]}']], [252,252],False)),('spacer','15')])
  labelparts += [('h2','WAŻNE: zawartość każdej koperty'),('p','Dokładnie jedna pieczęć świata i 10 losowych kawałków finałowej układanki. Nie kładź kartki z rozwiązaniem na zewnątrz koperty.')]
  labels=textpage('labels',labelparts)
+ # Children get the keypad legend on tablets. Print only physical component labels.
+ station_names=[
+    '1 · ARDUINO UNO\\nMÓZG MASZYNY',
+    '2 · WYŚWIETLACZ LED 8 × 32',
+    '3 · KLAWIATURA S1–S16',
+    '4 · NIEBIESKA DIODA LED\\n+ REZYSTOR 330 Ω',
+    '5 · ZIELONA DIODA LED\\n+ REZYSTOR 330 Ω',
+    '6 · PŁYTKA STYKOWA\\nI PRZEWODY',
+    '7 · ZASILANIE\\nPODŁĄCZA DOROSŁY'
+ ]
+ station_cells=[]
+ for i in range(0,8,2):
+     station_cells.append([P(station_names[j].replace('\\n','<br/>'),'center') if j<len(station_names) else '' for j in (i,i+1)])
+ station_table=Table(station_cells,colWidths=[250,250],rowHeights=[108]*4,hAlign='LEFT')
+ station_table.setStyle(TableStyle([
+     ('GRID',(0,0),(-1,-1),1.5,GOLD),
+     ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fcf8f3')),
+     ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+     ('LEFTPADDING',(0,0),(-1,-1),12),
+     ('RIGHTPADDING',(0,0),(-1,-1),12),
+ ]))
  stations=textpage('enigma_stations',[
- ('title','ENIGMA DOKTORA MORSE’A'),('subtitle','Etykiety do przygotowania 7 stanowisk w kuchni'),
- ('table',tbl([[f'{i}. {txt}'] for i,txt in enumerate(['ARDUINO UNO — mózg maszyny','WYŚWIETLACZ LED 8×32 — cztery kwadraty','KLAWIATURA S1–S16','NIEBIESKA LED + rezystor 330 Ω','ZIELONA LED + rezystor 330 Ω','PŁYTKA STYKOWA I PRZEWODY','ZASILANIE — PODŁĄCZA DOROSŁY'],1)],[505],False)),
- ('spacer','15'),('h2','Legenda klawiatury — postaw obok urządzenia'),
- ('table',tbl([['Przycisk','Działanie'],['S1–S9','Cyfry 1–9'],['S10','0'],['S11','Usuń ostatnią cyfrę'],['S12','Zatwierdź'],['S13','Wyczyść'],['S14–S16','Nieużywane']],[165,340])),
- ('p','Program Arduino UNO musi być wgrany przed zabawą. Nie włączaj zasilania przed kontrolą dorosłego.')])
+     ('title','ENIGMA DOKTORA MORSE’A'),
+     ('subtitle','Siedem etykiet do wycięcia i rozłożenia obok części urządzenia.'),
+     ('table',station_table),
+ ])
  clocknote=textpage('clock_notes',[
  ('title','DZIENNIK ZEGARMISTRZA'),('subtitle','Karta zapisu do Świata IV — dzieci korzystają z logicznych wskazówek NA TABLECIE'),
  ('quote','„Zatrzymać czas nie znaczy zatrzymać koło. Prawdziwa chwila ujawnia się tylko w odpowiednim świetle”. — Aureliusz'),
