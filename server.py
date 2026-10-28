@@ -70,6 +70,18 @@ class Handler(BaseHTTPRequestHandler):
                 STATE.clear(); STATE.update(fresh()); save(); return self.reply({"ok":True})
             if role not in ("1","2"): return self.reply({"error":"Nieprawidłowy gracz"},400)
             w=STATE["world1"]
+            if path=="/api/world3/answer":
+                if not all(STATE["world2"]["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat II"},409)
+                if str(data.get("code","")).strip().upper()!="BURZA": return self.reply({"error":"Hasło Enigmy jest niepoprawne"},409)
+                STATE["world3"]["answers"][role]=True
+                save()
+                return self.reply({"ok":True})
+            if path=="/api/world3/envelope":
+                if not all(STATE["world3"]["answers"].values()): return self.reply({"error":"Obie Strażniczki muszą odblokować Enigmę"},409)
+                if str(data.get("code","")).strip().upper()!=ENVELOPE_3_CODE: return self.reply({"error":"Niepoprawny kod Pieczęci III"},409)
+                STATE["world3"]["envelope"][role]=True
+                save()
+                return self.reply({"ok":True})
             if path.startswith("/api/world2/"):
                 if not all(w["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat I"},409)
                 w2=STATE["world2"]
