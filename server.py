@@ -26,11 +26,11 @@ ENVELOPE_3_CODE="ISKRA-731"
 ENVELOPE_4_CODE="CZAS-604"
 ENVELOPE_5_CODE="MROK-852"
 ENVELOPE_6_CODE="ISKRA-906"
-FINAL_CODE="841086"
+FINAL_MAGIC="WOLNOŚĆ"
 BOOKS=["ksiezyc","kruk","klucz","pajak","waz","swieca"]
 PAGES5={"ksiezyc":"24","kruk":"36","klucz":"18","pajak":"42","waz":"27","swieca":"15"}
 SEARCH_ORDER=["Kościotrup","Duch","Wiedźma","Mumia","Wampir","Wilkołak"]
-def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world2":{"found":[],"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world3":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world4":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world5":{"found":[],"pages":{},"uv":{"1":False,"2":False},"answer":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world6":{"found":{"1":False,"2":False},"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world7":{"pieces":{"1":False,"2":False},"answers":{"1":False,"2":False},"vows":{"1":False,"2":False}}}
+def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world2":{"found":[],"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world3":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world4":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world5":{"found":[],"pages":{},"uv":{"1":False,"2":False},"answer":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world6":{"found":{"1":False,"2":False},"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world7":{"pieces":{"1":False,"2":False},"magic":{"1":False,"2":False},"stopped_at":None}}
 try: STATE=json.loads(SAVE.read_text(encoding="utf-8"))
 except (FileNotFoundError,ValueError): STATE=fresh()
 def save(): SAVE.write_text(json.dumps(STATE,ensure_ascii=False,indent=2),encoding="utf-8")
@@ -42,6 +42,8 @@ STATE.setdefault("world4",fresh()["world4"])
 STATE.setdefault("world5",fresh()["world5"])
 STATE.setdefault("world6",fresh()["world6"])
 STATE.setdefault("world7",fresh()["world7"])
+STATE["world7"].setdefault("magic",{"1":False,"2":False})
+STATE["world7"].setdefault("stopped_at",None)
 def snapshot(role):
     players=STATE["players"]; page=STATE["page"]; started=STATE["started_at"]
     phase="create" if not players[role] else "waiting" if not all(players.values()) else "story" if page<len(PAGES) else "playing" if started else "oath"
@@ -59,8 +61,8 @@ def snapshot(role):
     w6=STATE["world6"]
     stage6="search" if not all(w6["found"].values()) else "solve" if not all(w6["answers"].values()) else "envelope" if not all(w6["envelope"].values()) else "finished"
     w7=STATE["world7"]
-    stage7="assemble" if not all(w7["pieces"].values()) else "code" if not all(w7["answers"].values()) else "oath" if not all(w7["vows"].values()) else "victory"
-    return {"world7":{"stage":stage7,"pieces":w7["pieces"],"answers":w7["answers"],"vows":w7["vows"]},"world6":{"stage":stage6,"found":w6["found"],"answers":w6["answers"],"envelope":w6["envelope"]},"world5":{"stage":stage5,"found":w5["found"],"pages":w5["pages"],"uv":w5["uv"],"answer":w5["answer"],"envelope":w5["envelope"]},"world4":{"stage":stage4,"answers":w4["answers"],"envelope":w4["envelope"]},"world3":{"stage":stage3,"answers":w3["answers"],"envelope":w3["envelope"]},"world2":{"stage":stage2,"found":w2["found"],"answers":w2["answers"],"envelope":w2["envelope"]},"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
+    stage7="assemble" if not all(w7["pieces"].values()) else "magic" if not all(w7["magic"].values()) else "victory"
+    return {"world7":{"stage":stage7,"pieces":w7["pieces"],"magic":w7["magic"]},"world6":{"stage":stage6,"found":w6["found"],"answers":w6["answers"],"envelope":w6["envelope"]},"world5":{"stage":stage5,"found":w5["found"],"pages":w5["pages"],"uv":w5["uv"],"answer":w5["answer"],"envelope":w5["envelope"]},"world4":{"stage":stage4,"answers":w4["answers"],"envelope":w4["envelope"]},"world3":{"stage":stage3,"answers":w3["answers"],"envelope":w3["envelope"]},"world2":{"stage":stage2,"found":w2["found"],"answers":w2["answers"],"envelope":w2["envelope"]},"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int((w7.get("stopped_at") or time.time())-started)) if started else 7200}
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def reply(self,obj,status=200,html=False):
