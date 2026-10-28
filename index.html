@@ -29,7 +29,7 @@ function world2Content(w,role){
    const clues=[
     ['I — Strażnik zamkniętych wspomnień','W tej komnacie stoi mebel, który przechowuje rzeczy, choć nie jest skrzynią skarbów. Jego wnętrze nie otwiera się jak drzwi do pokoju. Trzeba pociągnąć, by ukazała się ukryta przestrzeń. Nie szukaj na półkach ani na blacie: pierwsza wiadomość śpi we wnętrzu jednej z wysuwanych przegród.'],
     ['II — Kraina pod śpiącym olbrzymem','Każdej nocy ktoś odpoczywa wysoko ponad tym miejscem. To, co jest nad nim, służy do snu; to, co jest pod nim, często skrywa kurz i zapomniane drobiazgi. Aby odkryć drugi szept, zejdź wzrokiem niżej niż poduszka i kołdra.'],
-    ['III — Granica światła','Za dnia pozwala światłu wypełniać komnatę, nocą może zasłonić ją przed ciekawskimi oczami. Nie jest ścianą, lecz potrafi oddzielić pokój od tego, co za oknem. Trzeci szept ukrył się za jej fałdami.']
+    ['III — Granica światła','Nie mam nóg, a potrafię wędrować w górę i w dół. Nie mam powiek, lecz jednym ruchem pogrążam pokój w półmroku. Za dnia mogę odsłonić światło, a wieczorem ukryć mieszkańców przed spojrzeniami z zewnątrz. Nie poruszam się sam. Potrzebuję kogoś, kto pociągnie za mój cienki przewodnik. Morthar ukrył trzeci szept tam, gdzie kończy się światło, a zaczyna cień. Szukajcie po stronie, której nie widać, gdy stoję na straży okna.']
    ];
    out+='<p><b>Twoje zadanie:</b> odczytuj zagadki i szukaj kartek. Gdy naprawdę znajdziesz kartkę, zaznacz ją.</p>';
    out+=clues.map((x,i)=>'<div class="paper"><b>'+x[0]+'</b>\\n'+x[1]+'</div><button '+(found.includes(String(i+1))?'disabled':'')+' onclick="findMirror(\''+(i+1)+'\')">'+(found.includes(String(i+1))?'✔ Znaleziona':'Znalazłam kartkę '+(i+1))+'</button>').join('');
