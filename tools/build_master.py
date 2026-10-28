@@ -309,7 +309,6 @@ def build_handouts(dst):
  add('V • Sześć symboli ksiąg',locate('books5'),[2])
  add('V • Pieczęć',seals[5])
  add('VI • Pieczęć',seals[6])
- add('VII • Plansza 60 puzzli',locate('final7'),[4])
  add('VII • List Morthara',locate('final7'),[1])
  add('VII • Magiczne słowo',locate('final7'),[3])
  add('VII • Siódma pieczęć',seven)
