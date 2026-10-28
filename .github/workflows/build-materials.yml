@@ -5,7 +5,8 @@ on:
     paths:
       - "tools/build_master.py"
       - ".github/workflows/build-materials.yml"
-      - "assets/zrodla/**"\n      - "tarcze_7_2_4_test.pdf"
+      - "assets/zrodla/**"
+      - "tarcze_7_2_4_test.pdf"
 permissions:
   contents: write
 jobs:
