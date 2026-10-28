@@ -19,11 +19,11 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 W katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
 
 - **`Instrukcja_organizatora.pdf`** – 10 stron: przygotowanie domu, kryjówki, wyposażenie, odpowiedzi, zasilanie urządzeń, kontrola przed startem. **Tylko dla dorosłego — zawiera rozwiązania.**
-- **`Materialy_do_druku.pdf`** – 28 stron: tylko fizyczne elementy potrzebne do rozstawienia i wręczenia: karty sześciu bestii, trzy lustrzane wiadomości, papierowa instrukcja budowania Enigmy i etykiety jej części, cztery tarcze i symbole, symbole sześciu książek, siedem pieczęci, etykiety kopert, plansza 60 puzzli, list Morthara, kartka z zaklęciem i dwa dyplomy.
+- **`Materialy_do_druku.pdf`** – 27 stron: tylko fizyczne elementy potrzebne do rozstawienia i wręczenia: karty sześciu bestii, trzy lustrzane wiadomości, papierowa instrukcja budowania Enigmy i etykiety jej części, cztery tarcze i symbole, symbole sześciu książek, siedem pieczęci, etykiety kopert, list Morthara, kartka z zaklęciem i dwa dyplomy.
 
-**Nie drukujemy osobno** opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
+**Nie drukujemy osobno** planszy puzzli (korzystamy z prawdziwego zestawu 60 elementów) ani opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
 
-**Uwaga po aktualizacji generatora:** jeżeli `Materialy_do_druku.pdf` ma jeszcze **37 stron**, jest starszą wersją. Uruchom generator poniżej albo podmień PDF na aktualną wersję **28-stronicową**. Nie korzystaj z obu wersji jednocześnie.
+**Uwaga po aktualizacji generatora:** jeżeli `Materialy_do_druku.pdf` ma jeszcze **37 lub 28 stron**, jest starszą wersją. Uruchom generator poniżej albo podmień PDF na aktualną wersję **27-stronicową**. Nie korzystaj z obu wersji jednocześnie.
 
 ### Jak odtworzyć oba PDF-y na Ubuntu
 
@@ -38,7 +38,7 @@ pip install reportlab pymupdf
 HALLOWEEN_ASSET_DIR=. HALLOWEEN_OUT_DIR=. python3 tools/build_master.py
 ```
 
-Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**28 stron**) w katalogu głównym. Nie trzeba otwierać ani drukować pozostałych PDF-ów z podkatalogów.
+Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**27 stron**) w katalogu głównym. Nie trzeba otwierać ani drukować pozostałych PDF-ów z podkatalogów.
 
 Aby zapisać aktualne wersje także na GitHubie:
 
@@ -48,7 +48,7 @@ git commit -m "Komplet dokumentów: instrukcja i rekwizyty"
 git push
 ```
 
-Wydruk: A4, rzeczywista skala **100%**, jednostronnie. Planszę 60 puzzli przed pocięciem zapisz na odwrocie atramentem UV, poczekaj aż wyschnie, a następnie podziel na 60 elementów i rozłóż po 10 w kopertach I–VI. Karty z magicznym słowem i list Morthara włóż do skrzyni, nie pozostawiaj ich na widoku.
+Wydruk: A4, rzeczywista skala **100%**, jednostronnie. Przygotuj **prawdziwe puzzle z dokładnie 60 elementów** (nie drukuj ani nie wycinaj papierowych). Ułóż całość, odwróć ją między dwiema sztywnymi tekturami i napisz na rewersie zagadkę o Kasprowym Wierchu atramentem UV. Po wyschnięciu wymieszaj elementy i rozłóż **po 10 prawdziwych puzzli** w kopertach I–VI. Karty z magicznym słowem i list Morthara włóż do skrzyni, nie pozostawiaj ich na widoku.
 
 GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow nie ma przydzielonego działającego runnera, należy wykonać polecenia lokalnie. **Najważniejsze są dwa pliki PDF w katalogu głównym**, nie pośrednie dokumenty ani stare wersje.
 
@@ -62,7 +62,7 @@ GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow n
 | IV | Gabinet | Cztery silniki, papierowe tarcze, stroboskop i kod 7294. |
 | V | Pokój Emilki | Sześć ksiąg, rozumowanie, atrament UV, imię MORWENA. |
 | VI | Pokój Zosi | Sześć kopert UV, mikroskop, rezystory i hasło PRĄDEM. |
-| VII | Garderoba | 60 puzzli, Kasprowy Wierch, kłódka 1987, skrzynia i słowo WOLNOŚĆ. |
+| VII | Garderoba | 60 prawdziwych puzzli, Kasprowy Wierch, kłódka 1987, skrzynia i słowo WOLNOŚĆ. |
 
 Każda z pierwszych sześciu kopert ze zdobywaną pieczęcią zawiera **dokładnie 10 kawałków puzzli**. W finale układanka złożona z 60 kawałków, po odwróceniu i oświetleniu UV, ujawnia wskazówkę do zamka.
 
