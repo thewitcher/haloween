@@ -16,8 +16,38 @@ function toggleReject(name){rejected=rejected.includes(name)?rejected.filter(x=>
 function confirmReject(){if(rejected.length!==2){notice.textContent='Wybierz dokładnie dwie bestie.';return}action('/api/world1/eliminate',{beasts:rejected})}
 function sendSeal(){action('/api/world1/answer',{code:document.querySelector('#seal').value})}
 function finishEnvelope(){action('/api/world1/envelope',{code:document.querySelector('#envelope-code').value})}
+function findMirror(item){action("/api/world2/find",{item})}
+function solveMirror(){action("/api/world2/answer",{code:document.querySelector("#mirror-answer").value})}
+function sealMirror(){action("/api/world2/envelope",{code:document.querySelector("#mirror-seal").value})}
 function create(){action('/api/create',{name:document.querySelector('#name').value,race,avatar})}
 function format(s){return [Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(v=>String(v).padStart(2,'0')).join(':')}
+function world2Content(w,role){
+ const found=w.found||[],stage=w.stage;
+ if(stage==='search'){
+  let out='<h2>Trzy szepty zwierciadła</h2><p>Znajdźcie trzy kartki. Nie wystarczy samo ich znalezienie: odczytajcie lustrzane napisy i zachowajcie słowa.</p>';
+  if(role==='1'){
+   const clues=[
+    ['I — Strażnik zamkniętych wspomnień','W tej komnacie stoi mebel, który przechowuje rzeczy, choć nie jest skrzynią skarbów. Jego wnętrze nie otwiera się jak drzwi do pokoju. Trzeba pociągnąć, by ukazała się ukryta przestrzeń. Nie szukaj na półkach ani na blacie: pierwsza wiadomość śpi we wnętrzu jednej z wysuwanych przegród.'],
+    ['II — Kraina pod śpiącym olbrzymem','Każdej nocy ktoś odpoczywa wysoko ponad tym miejscem. To, co jest nad nim, służy do snu; to, co jest pod nim, często skrywa kurz i zapomniane drobiazgi. Aby odkryć drugi szept, zejdź wzrokiem niżej niż poduszka i kołdra.'],
+    ['III — Granica światła','Za dnia pozwala światłu wypełniać komnatę, nocą może zasłonić ją przed ciekawskimi oczami. Nie jest ścianą, lecz potrafi oddzielić pokój od tego, co za oknem. Trzeci szept ukrył się za jej fałdami.']
+   ];
+   out+='<p><b>Twoje zadanie:</b> odczytuj zagadki i szukaj kartek. Gdy naprawdę znajdziesz kartkę, zaznacz ją.</p>';
+   out+=clues.map((x,i)=>'<div class="paper"><b>'+x[0]+'</b>\\n'+x[1]+'</div><button '+(found.includes(String(i+1))?'disabled':'')+' onclick="findMirror(\''+(i+1)+'\')">'+(found.includes(String(i+1))?'✔ Znaleziona':'Znalazłam kartkę '+(i+1))+'</button>').join('');
+  }else{
+   out+='<div class="paper"><b>Przestroga zwierciadła</b>\\nNie wszystkie słowa czyta się tak, jak je zapisano. Morthar odwrócił ich oblicza. Zwykłe spojrzenie może zwieść, ale prawdziwe lustro pokaże to, co ukryte. Nie odwracajcie kartek: poszukajcie ich odbicia.</div><p><b>Twoje zadanie:</b> pomóż odczytać każdą kartkę w lustrze. Strażniczka I zna miejsca ukrycia. Przekaż jej sposób odczytu.</p><div class="status">Odnalezione wiadomości: '+found.length+' / 3</div>';
+  }
+  return out;
+ }
+ if(stage==='solve'){
+  let out='<h2>📜 Trzy odczytane słowa</h2><p>Macie już wszystkie trzy kartki. Ułóżcie z nich jedno zdanie, które otworzy zwierciadło.</p>';
+  if(role==='2')out+='<div class="paper"><b>Prawo trzech szeptów</b>\\nNajpierw przychodzi czas, gdy słońce znika. Po nim pojawia się najkrótsze słowo — łącznik, który niczego nie zdradza samotnie. Na końcu są ci, którzy patrzą, choć nie mają twarzy. Przeczytajcie całe zdanie na głos.</div>';
+  else out+='<div class="paper">Masz trzy znalezione kartki. Odczytaj ich słowa przy pomocy lustra i przekaż je Strażniczce II. To ona zna prawo właściwej kolejności.</div>';
+  return out+(w.answers[role]?'<div class="status">✔ Hasło przyjęte. Czekamy na drugą Strażniczkę.</div>':'<input id="mirror-answer" type="text" placeholder="Wpisz trzy słowa"><button onclick="solveMirror()">OTWÓRZ ZWIERCIADŁO</button>');
+ }
+ let out='<h2>🔐 Ostatni szept — Pieczęć II</h2><div class="paper">„Znam podróżnika, który pokonuje wiele kilometrów, lecz nigdy nie wyjeżdża z domu. Jego koło obraca się bez końca, a droga pod nim nie przesuwa się ani o krok. Gdy pragnie wody, sięga po niewielkie naczynie, które podróżuje razem z nim, choć samo nie ma nóg. Tam, gdzie zwykle czeka napój dla zmęczonego rowerzysty, Morthar ukrył drugi znak.”</div><p>Znajdźcie kopertę nr 2. Zachowajcie drugi fragment puzzli do finału.</p>';
+ if(stage==='finished')return out+'<div class="status">✔ Obie Strażniczki odczytały Pieczęć II. Świat II ukończony! Następny świat: Laboratorium Doktora Morse’a.</div>';
+ return out+(w.envelope[role]?'<div class="status">✔ Kod Pieczęci II przyjęty. Czekamy na partnerkę.</div>':'<p>Odczytaj kod z fizycznej Pieczęci II i wpisz go na swoim tablecie.</p><input id="mirror-seal" type="text" placeholder="Kod z koperty nr 2"><button onclick="sealMirror()">SPRAWDŹ PIECZĘĆ II</button>');
+}
 function render(d){
  if(!role){app.innerHTML='<h2 class="center">Wybierz swój tablet</h2><p class="center muted">Każda dziewczynka wybiera inny numer.</p><div class="row"><button class="tile" onclick="chooseRole(1)">📱 Strażniczka I</button><button class="tile" onclick="chooseRole(2)">📱 Strażniczka II</button></div>';return}
  if(d.phase==='create'){const races=['Elfka Księżyca','Wampirzyca','Wróżka Cieni','Czarownica'],avatars=['🌙','🦇','🧚','🔮','🐈‍⬛','🕯️','🦉','✨'];app.innerHTML='<div class="status">📱 Strażniczka '+role+' — stwórz postać</div><h2>Kim jesteś, Wędrowczyni?</h2><label>Imię bohaterki</label><input id="name" type="text" maxlength="20" placeholder="Wpisz imię" autocomplete="off"><h2>Wybierz rasę</h2><div class="row">'+races.map(x=>'<button class="tile" data-race="'+x+'" onclick="setRace(this.dataset.race)">'+x+'</button>').join('')+'</div><h2>Wybierz awatar</h2><div class="row">'+avatars.map(x=>'<button class="tile avatar" data-avatar="'+x+'" onclick="setAvatar(this.dataset.avatar)">'+x+'</button>').join('')+'</div><p><button onclick="create()">Zapisz bohaterkę →</button></p>';return}
@@ -50,11 +80,11 @@ function render(d){
  }else{
  content+='<h2>🔓 PIERWSZA PIECZĘĆ ZŁAMANA!</h2><div class="status center" style="font-size:32px">ODKRYTY KOD: <strong>7219</strong></div><div class="paper">Dobrze. Jedna z siedmiu pieczęci została złamana. Ale Morthar już wie, że tu jesteście. Nie traćcie czasu.\n\n<b>W tym świecie pozostało coś jeszcze.</b>\n\nW tym domu istnieje miejsce, które codziennie przyjmuje gości, choć nigdy nie otwiera drzwi. Nie ma ust, a mimo to potrafi pochłaniać drobne skarby. Nie ma rąk, lecz zatrzymuje to, co nieostrożnie pozostawisz w jego pobliżu. Zmęczeni wędrowcy szukają u niego odpoczynku, a ci, którzy zasną, mogą obudzić się w zupełnie innej pozycji. Morthar ukrył tam fragment pierwszej Pieczęci. Nie szukajcie go jednak tam, gdzie najwygodniej usiąść. Prawdziwe tajemnice kryją się w miejscach, do których rzadko zagląda światło. Odnajdźcie strażnika odpoczynku i zajrzyjcie w jego najciemniejsze zakamarki.</div><p>Odnajdźcie kopertę oznaczoną numerem 1 i zachowajcie jej zawartość do finału.</p>';
  if(stage==='envelope'){content+=w.envelope[role]?'<div class="status">✔ Potwierdzono. Czekamy na partnerkę.</div>':'<h2>🔏 Tajny kod z koperty nr 1</h2><p>Znajdźcie fizyczną Pieczęć w kopercie i odczytajcie umieszczony na niej kod. Każda Strażniczka wpisuje go osobno.</p><input id="envelope-code" type="text" maxlength="24" placeholder="Kod z koperty" autocomplete="off"><button onclick="finishEnvelope()">SPRAWDŹ KOD PIECZĘCI</button>'}
- else{content+='<div class="status">✔ Obie Strażniczki potwierdziły odnalezienie fragmentu nr 1.</div><h2>ŚWIAT II — GALERIA LUSTRZANYCH SZEPTÓW</h2><p>📍 SYPIALNIA. Możecie przejść do następnego pomieszczenia. Zagadki tego świata dodamy w kolejnym etapie.</p>'}
+ else{content+='<div class="status">✔ Obie Strażniczki potwierdziły odnalezienie fragmentu nr 1.</div><h2>🪞 ŚWIAT II — GALERIA LUSTRZANYCH SZEPTÓW</h2><p>📍 SYPIALNIA. Morthar odwrócił słowa i ukrył trzy wiadomości. Lustro potrafi przywrócić im właściwy kształt. Każda z was posiada tylko część wiedzy.</p>'+world2Content(d.world2,role)'}
  }
  app.innerHTML=head+content;
  }
 }
-async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name,d.world1.stage,d.world1.found.join(','),d.world1.number_count,d.world1.eliminated?.join(','),d.world1.answers['1'],d.world1.answers['2'],d.world1.envelope['1'],d.world1.envelope['2']].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
+async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name,d.world1.stage,d.world1.found.join(','),d.world1.number_count,d.world1.eliminated?.join(','),d.world1.answers['1'],d.world1.answers['2'],d.world1.envelope['1'],d.world1.envelope['2'],d.world2.stage,d.world2.found.join(','),d.world2.answers['1'],d.world2.answers['2'],d.world2.envelope['1'],d.world2.envelope['2']].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
 refresh();setInterval(refresh,1000);
 </script></body></html>
