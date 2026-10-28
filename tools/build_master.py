@@ -336,8 +336,11 @@ def build_handouts(dst):
  result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
- for temporary in OUT.glob('_*.pdf'):
-  try: temporary.unlink()
+ generated_names=['_labels.pdf','_enigma_stations.pdf','_seal7.pdf',
+                  '_dyplom_zosia.pdf','_dyplom_emilka.pdf'] + [
+                    f'_seal_{number}.pdf' for number in range(1,7)]
+ for name in generated_names:
+  try: (OUT/name).unlink(missing_ok=True)
   except OSError: pass
  return sections
 
