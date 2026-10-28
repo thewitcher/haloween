@@ -23,8 +23,9 @@ BEASTS={"Wampir":"7","Wilkołak":"2","Mumia":"9","Wiedźma":"4","Duch":"1","Koś
 ENVELOPE_CODE="KRUK-583"
 ENVELOPE_2_CODE="LUSTRO-426"
 ENVELOPE_3_CODE="ISKRA-731"
+ENVELOPE_4_CODE="CZAS-604"
 SEARCH_ORDER=["Kościotrup","Duch","Wiedźma","Mumia","Wampir","Wilkołak"]
-def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world2":{"found":[],"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world3":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}}}
+def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world2":{"found":[],"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world3":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world4":{"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}}}
 try: STATE=json.loads(SAVE.read_text(encoding="utf-8"))
 except (FileNotFoundError,ValueError): STATE=fresh()
 def save(): SAVE.write_text(json.dumps(STATE,ensure_ascii=False,indent=2),encoding="utf-8")
@@ -32,6 +33,7 @@ if "world1" not in STATE: STATE["world1"]=fresh()["world1"]
 STATE["world1"].setdefault("eliminated",None)
 STATE.setdefault("world2",fresh()["world2"])
 STATE.setdefault("world3",fresh()["world3"])
+STATE.setdefault("world4",fresh()["world4"])
 def snapshot(role):
     players=STATE["players"]; page=STATE["page"]; started=STATE["started_at"]
     phase="create" if not players[role] else "waiting" if not all(players.values()) else "story" if page<len(PAGES) else "playing" if started else "oath"
@@ -42,7 +44,9 @@ def snapshot(role):
     stage2="search" if len(w2["found"])<3 else "solve" if not all(w2["answers"].values()) else "envelope" if not all(w2["envelope"].values()) else "finished"
     w3=STATE["world3"]
     stage3="unlock" if not all(w3["answers"].values()) else "envelope" if not all(w3["envelope"].values()) else "finished"
-    return {"world3":{"stage":stage3,"answers":w3["answers"],"envelope":w3["envelope"]},"world2":{"stage":stage2,"found":w2["found"],"answers":w2["answers"],"envelope":w2["envelope"]},"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
+    w4=STATE["world4"]
+    stage4="solve" if not all(w4["answers"].values()) else "envelope" if not all(w4["envelope"].values()) else "finished"
+    return {"world4":{"stage":stage4,"answers":w4["answers"],"envelope":w4["envelope"]},"world3":{"stage":stage3,"answers":w3["answers"],"envelope":w3["envelope"]},"world2":{"stage":stage2,"found":w2["found"],"answers":w2["answers"],"envelope":w2["envelope"]},"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def reply(self,obj,status=200,html=False):
@@ -70,6 +74,14 @@ class Handler(BaseHTTPRequestHandler):
                 STATE.clear(); STATE.update(fresh()); save(); return self.reply({"ok":True})
             if role not in ("1","2"): return self.reply({"error":"Nieprawidłowy gracz"},400)
             w=STATE["world1"]
+            if path=="/api/world4/answer":
+                if not all(STATE["world3"]["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat III"},409)
+                if str(data.get("code","")).strip()!="7294": return self.reply({"error":"Mechanizm odrzuca kod. Sprawdźcie kolejność symboli."},409)
+                STATE["world4"]["answers"][role]=True; save(); return self.reply({"ok":True})
+            if path=="/api/world4/envelope":
+                if not all(STATE["world4"]["answers"].values()): return self.reply({"error":"Obie Strażniczki muszą odblokować mechanizm"},409)
+                if str(data.get("code","")).strip().upper()!=ENVELOPE_4_CODE: return self.reply({"error":"Niepoprawny kod Pieczęci IV"},409)
+                STATE["world4"]["envelope"][role]=True; save(); return self.reply({"ok":True})
             if path=="/api/world3/answer":
                 if not all(STATE["world2"]["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat II"},409)
                 if str(data.get("code","")).strip().upper()!="BURZA": return self.reply({"error":"Hasło Enigmy jest niepoprawne"},409)
