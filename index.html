@@ -32,15 +32,15 @@ function world2Content(w,role){
     ['III — Granica światła','Nie mam nóg, a potrafię wędrować w górę i w dół. Nie mam powiek, lecz jednym ruchem pogrążam pokój w półmroku. Za dnia mogę odsłonić światło, a wieczorem ukryć mieszkańców przed spojrzeniami z zewnątrz. Nie poruszam się sam. Potrzebuję kogoś, kto pociągnie za mój cienki przewodnik. Morthar ukrył trzeci szept tam, gdzie kończy się światło, a zaczyna cień. Szukajcie po stronie, której nie widać, gdy stoję na straży okna.']
    ];
    out+='<p><b>Twoje zadanie:</b> odczytuj zagadki i szukaj kartek. Gdy naprawdę znajdziesz kartkę, zaznacz ją.</p>';
-   out+=clues.map((x,i)=>'<div class="paper"><b>'+x[0]+'</b>\\n'+x[1]+'</div><button '+(found.includes(String(i+1))?'disabled':'')+' onclick="findMirror(\''+(i+1)+'\')">'+(found.includes(String(i+1))?'✔ Znaleziona':'Znalazłam kartkę '+(i+1))+'</button>').join('');
+   out+=clues.map((x,i)=>'<div class="paper"><b>'+x[0]+'</b>\<br>'+x[1]+'</div><button '+(found.includes(String(i+1))?'disabled':'')+' onclick="findMirror(\''+(i+1)+'\')">'+(found.includes(String(i+1))?'✔ Znaleziona':'Znalazłam kartkę '+(i+1))+'</button>').join('');
   }else{
-   out+='<div class="paper"><b>Przestroga zwierciadła</b>\\nNie wszystkie słowa czyta się tak, jak je zapisano. Morthar odwrócił ich oblicza. Zwykłe spojrzenie może zwieść, ale prawdziwe lustro pokaże to, co ukryte. Nie odwracajcie kartek: poszukajcie ich odbicia.</div><p><b>Twoje zadanie:</b> pomóż odczytać każdą kartkę w lustrze. Strażniczka I zna miejsca ukrycia. Przekaż jej sposób odczytu.</p><div class="status">Odnalezione wiadomości: '+found.length+' / 3</div>';
+   out+='<div class="paper"><b>Przestroga zwierciadła</b>\<br>Nie wszystkie słowa czyta się tak, jak je zapisano. Morthar odwrócił ich oblicza. Zwykłe spojrzenie może zwieść, ale prawdziwe lustro pokaże to, co ukryte. Nie odwracajcie kartek: poszukajcie ich odbicia.</div><p><b>Twoje zadanie:</b> pomóż odczytać każdą kartkę w lustrze. Strażniczka I zna miejsca ukrycia. Przekaż jej sposób odczytu.</p><div class="status">Odnalezione wiadomości: '+found.length+' / 3</div>';
   }
   return out;
  }
  if(stage==='solve'){
   let out='<h2>📜 Trzy odczytane słowa</h2><p>Macie już wszystkie trzy kartki. Ułóżcie z nich jedno zdanie, które otworzy zwierciadło.</p>';
-  if(role==='2')out+='<div class="paper"><b>Prawo trzech szeptów</b>\\nNajpierw przychodzi czas, gdy słońce znika. Po nim pojawia się najkrótsze słowo — łącznik, który niczego nie zdradza samotnie. Na końcu są ci, którzy patrzą, choć nie mają twarzy. Przeczytajcie całe zdanie na głos.</div>';
+  if(role==='2')out+='<div class="paper"><b>Prawo trzech szeptów</b>\<br>Najpierw przychodzi czas, gdy słońce znika. Po nim pojawia się najkrótsze słowo — łącznik, który niczego nie zdradza samotnie. Na końcu są ci, którzy patrzą, choć nie mają twarzy. Przeczytajcie całe zdanie na głos.</div>';
   else out+='<div class="paper">Masz trzy znalezione kartki. Odczytaj ich słowa przy pomocy lustra i przekaż je Strażniczce II. To ona zna prawo właściwej kolejności.</div>';
   return out+(w.answers[role]?'<div class="status">✔ Hasło przyjęte. Czekamy na drugą Strażniczkę.</div>':'<input id="mirror-answer" type="text" placeholder="Wpisz trzy słowa"><button onclick="solveMirror()">OTWÓRZ ZWIERCIADŁO</button>');
  }
