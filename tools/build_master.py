@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build canonical two-document set for Klątwa Siedmiu Światów.
 Uses existing verified original drawing assets and new authoritative setup text.
-A PDF source can be resolved either from local /mnt/data or organized GitHub subdirectories.
+All source graphics live under assets/zrodla; only the two PDFs at repository root are printable.
 """
 import os, math, re
 from pathlib import Path
@@ -17,38 +17,25 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-BASE = Path(os.getenv('HALLOWEEN_ASSET_DIR','/mnt/data'))
-OUT = Path(os.getenv('HALLOWEEN_OUT_DIR','/mnt/data'))
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+BASE = Path(os.getenv('HALLOWEEN_ASSET_DIR', str(PROJECT_ROOT)))
+OUT = Path(os.getenv('HALLOWEEN_OUT_DIR', str(PROJECT_ROOT)))
 OUT.mkdir(parents=True, exist_ok=True)
 ASSETS={
-'monsters':'01_Salon_Krypta_Szesciu_Bestii/KARTY_POTWOROW_CZARNO_BIALE.png',
-'seal1':'01_Salon_Krypta_Szesciu_Bestii/Pieczec_I_KRUK-583_czarno_biala_poprawiona.pdf',
-'world2':'02_Sypialnia_Galeria_Lustrzanych_Szeptow/Swiat_II_Galeria_Lustrzanych_Szeptow_DO_DRUKU.pdf',
-'enigma':'03_Kuchnia_Laboratorium_Doktora_Morsea/Enigma_Doktora_Morsea_PELNA_INSTRUKCJA_OBRAZKOWA.pdf',
-'seal3':'03_Kuchnia_Laboratorium_Doktora_Morsea/Pieczec_III_Enigma_Doktora_Morsea.pdf',
-'discs':'04_Biuro_Mechanizm_Zatrzymanego_Czasu/Swiat_IV_Cztery_Tarcze_12_Cyfr.pdf',
-'symbols4':'04_Biuro_Mechanizm_Zatrzymanego_Czasu/Swiat_IV_Symbole_i_Dziennik_Zegarmistrza.pdf',
-'seal4':'04_Biuro_Mechanizm_Zatrzymanego_Czasu/Pieczec_IV_Mechanizm_Zatrzymanego_Czasu.pdf',
-'books5':'05_Pokoj_Emilki_Biblioteka_Niewidzialnego_Atramentu/Swiat_V_Kompletny_Pakiet_Do_Druku.pdf',
-'final7':'07_Garderoba_Komnata_Cienia/Swiat_VII_FINAL_60_PUZZLI_KASPROWY.pdf',
-}
-LOCAL={
-'monsters':'KARTY_POTWOROW_CZARNO_BIALE.png',
-'seal1':'Pieczec_I_KRUK-583_czarno_biala_poprawiona.pdf',
-'world2':'Swiat_II_Galeria_Lustrzanych_Szeptow_DO_DRUKU.pdf',
-'enigma':'Enigma_Doktora_Morsea_PELNA_INSTRUKCJA_OBRAZKOWA.pdf',
-'seal3':'Pieczec_III_Enigma_Doktora_Morsea.pdf',
-'discs':'Swiat_IV_Cztery_Tarcze_12_Cyfr.pdf',
-'symbols4':'Swiat_IV_Symbole_i_Dziennik_Zegarmistrza.pdf',
-'seal4':'Pieczec_IV_Mechanizm_Zatrzymanego_Czasu.pdf',
-'books5':'Swiat_V_Kompletny_Pakiet_Do_Druku.pdf',
-'final7':'Swiat_VII_FINAL_60_PUZZLI_KASPROWY.pdf',
+'monsters':'assets/zrodla/karty_potworow.png',
+'world2':'assets/zrodla/lustrzane_wiadomosci.pdf',
+'enigma':'assets/zrodla/enigma_instrukcja_obrazkowa.pdf',
+'discs':'assets/zrodla/tarcze_zegara.pdf',
+'symbols4':'assets/zrodla/symbole_zegara.pdf',
+'books5':'assets/zrodla/symbole_ksiazek.pdf',
+'final7':'assets/zrodla/list_morthara_i_zaklecie.pdf'
 }
 
 def locate(key):
- for candidate in (BASE/ASSETS[key], BASE/LOCAL[key]):
-  if candidate.is_file():return candidate
- raise FileNotFoundError(f'Missing source asset {key}: '+str(BASE/ASSETS[key]))
+ if key not in ASSETS: raise KeyError(f'Unknown source asset: {key}')
+ candidate=BASE/ASSETS[key]
+ if candidate.is_file():return candidate
+ raise FileNotFoundError(f'Brak wymaganego źródła {key}: {candidate}. Sprawdź folder assets/zrodla.')
 
 fonts=[('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf','DV'),('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf','DV-B'),('/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf','DVS'),('/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf','DVS-B')]
 for f,n in fonts:pdfmetrics.registerFont(TTFont(n,f))

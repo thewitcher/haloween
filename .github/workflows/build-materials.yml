@@ -5,13 +5,7 @@ on:
     paths:
       - "tools/build_master.py"
       - ".github/workflows/build-materials.yml"
-      - "01_Salon_Krypta_Szesciu_Bestii/**"
-      - "02_Sypialnia_Galeria_Lustrzanych_Szeptow/**"
-      - "03_Kuchnia_Laboratorium_Doktora_Morsea/**"
-      - "04_Biuro_Mechanizm_Zatrzymanego_Czasu/**"
-      - "05_Pokoj_Emilki_Biblioteka_Niewidzialnego_Atramentu/**"
-      - "06_Pokoj_Zosi_Laboratorium_Ohma/**"
-      - "07_Garderoba_Komnata_Cienia/**"
+      - "assets/zrodla/**"
 permissions:
   contents: write
 jobs:

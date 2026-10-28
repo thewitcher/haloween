@@ -1,6 +1,6 @@
 # 🎃 Klątwa Siedmiu Światów
 
-Kompletna domowa gra escape room dla **Zosi i Emilki** (dwa tablety + laptop z Ubuntu + fizyczne rekwizyty). Siedem światów, 120 minut, dwa zsynchronizowane interfejsy, 60 fragmentów finałowej układanki. Przebieg i odpowiedzi są w `index.html` oraz `server.py`.
+Kompletna domowa gra escape room dla **Zosi i Emilki** (dwa tablety + laptop z Ubuntu + fizyczne rekwizyty). Siedem światów, 120 minut, dwa zsynchronizowane interfejsy, 60 **prawdziwych** puzzli w finale. Przebieg i odpowiedzi są w `index.html` oraz `server.py`.
 
 ## Uruchomienie
 
@@ -23,11 +23,11 @@ W katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
 
 **Nie drukujemy osobno** planszy puzzli (korzystamy z prawdziwego zestawu 60 elementów) ani opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
 
-**Uwaga po aktualizacji generatora:** jeżeli `Materialy_do_druku.pdf` ma jeszcze **37 lub 28 stron**, jest starszą wersją. Uruchom generator poniżej albo podmień PDF na aktualną wersję **27-stronicową**. Nie korzystaj z obu wersji jednocześnie.
+**Wersja obowiązująca:** `Instrukcja_organizatora.pdf` ma 10 stron, a `Materialy_do_druku.pdf` ma 27 stron. Dwie aktualne wersje znajdują się bezpośrednio w katalogu głównym. Nie ma już duplikatów z końcówką `-1`.
 
 ### Jak odtworzyć oba PDF-y na Ubuntu
 
-Źródłem do generowania jest `tools/build_master.py`. Stare PDF-y w katalogach poszczególnych światów są **wejściowymi zasobami graficznymi generatora** — nie usuwaj ich, dopóki generator z nich korzysta, nawet jeśli nie trzeba ich osobno drukować.
+Źródłem do generowania jest `tools/build_master.py`. **Siedem zachowanych materiałów źródłowych** znajduje się w `assets/zrodla/` (sześć oryginalnych PDF-ów z grafikami i jeden plik PNG). To zasoby techniczne generatora, **nie są przeznaczone do osobnego drukowania**. Wszystkie starsze wersje wydruków zostały usunięte z katalogów światów.
 
 ```bash
 cd ~/haloween
@@ -38,7 +38,7 @@ pip install reportlab pymupdf
 HALLOWEEN_ASSET_DIR=. HALLOWEEN_OUT_DIR=. python3 tools/build_master.py
 ```
 
-Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**27 stron**) w katalogu głównym. Nie trzeba otwierać ani drukować pozostałych PDF-ów z podkatalogów.
+Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**27 stron**) w katalogu głównym. Nie trzeba przeglądać ani drukować PDF-ów z `assets/zrodla/`. Służą wyłącznie do automatycznego odtwarzania aktualnego pakietu.
 
 Aby zapisać aktualne wersje także na GitHubie:
 
@@ -51,6 +51,14 @@ git push
 Wydruk: A4, rzeczywista skala **100%**, jednostronnie. Przygotuj **prawdziwe puzzle z dokładnie 60 elementów** (nie drukuj ani nie wycinaj papierowych). Ułóż całość, odwróć ją między dwiema sztywnymi tekturami i napisz na rewersie zagadkę o Kasprowym Wierchu atramentem UV. Po wyschnięciu wymieszaj elementy i rozłóż **po 10 prawdziwych puzzli** w kopertach I–VI. Karty z magicznym słowem i list Morthara włóż do skrzyni, nie pozostawiaj ich na widoku.
 
 GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow nie ma przydzielonego działającego runnera, należy wykonać polecenia lokalnie. **Najważniejsze są dwa pliki PDF w katalogu głównym**, nie pośrednie dokumenty ani stare wersje.
+
+## Układ repozytorium
+
+- `Instrukcja_organizatora.pdf`, `Materialy_do_druku.pdf` — jedyne dwa dokumenty do otwierania i drukowania.
+- `index.html`, `server.py`, `reset.py` — aplikacja i obsługa stanu gry.
+- `Enigma_Doktora_Morsea.ino`, `Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino` — programy mikrokontrolerów.
+- `tools/build_master.py` — generator obu dokumentów.
+- `assets/zrodla/` — źródłowe grafiki, wyłącznie techniczne; **nie drukować osobno**.
 
 ## Przebieg siedmiu światów
 
