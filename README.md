@@ -14,16 +14,18 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 
 **Reset przed kolejną próbą:** przy uruchomionym serwerze: `python3 reset.py`. Uwaga: usuwa postęp obu graczy; nie używaj go podczas zabawy.
 
-## Dwa dokumenty w katalogu głównym — wersja obowiązująca
+## Dwa dokumenty w katalogu głównym — po regeneracji
 
-W katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
+**Uwaga (Świat IV, 29.10.2026):** aplikacja, skecz i generator zostały zaktualizowane, ale GitHub Actions nie przydzielił runnera do automatycznej regeneracji PDF-ów. **Zapisane w repozytorium pliki `Instrukcja_organizatora.pdf` i `Materialy_do_druku.pdf` mogą nadal zawierać stary układ czterech silników i tarcz.** Przed grą uruchom lokalnie generator poniżej i zapisz wygenerowane PDF-y do repozytorium.
+
+Docelowo w katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
 
 - **`Instrukcja_organizatora.pdf`** – 10 stron: przygotowanie domu, kryjówki, wyposażenie, odpowiedzi, zasilanie urządzeń, kontrola przed startem. **Tylko dla dorosłego — zawiera rozwiązania.**
 - **`Materialy_do_druku.pdf`** – 25 stron: tylko fizyczne elementy potrzebne do rozstawienia i wręczenia: karty sześciu bestii, trzy lustrzane wiadomości, papierowa instrukcja budowania Enigmy i etykiety jej części, dwie strony z czterema wymiennymi tarczami (7, 4, 2A, 9) i symbole do naklejenia na odwrotach, symbole sześciu książek, siedem pieczęci, etykiety kopert, list Morthara, kartka z zaklęciem i dwa dyplomy.
 
 **Nie drukujemy osobno** planszy puzzli (korzystamy z prawdziwego zestawu 60 elementów) ani opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
 
-**Wersja obowiązująca:** `Instrukcja_organizatora.pdf` ma 10 stron, a `Materialy_do_druku.pdf` ma 25 stron. Dwie aktualne wersje znajdują się bezpośrednio w katalogu głównym. Nie ma już duplikatów z końcówką `-1`.
+**Wersja po regeneracji:** `Instrukcja_organizatora.pdf` ma 10 stron, a `Materialy_do_druku.pdf` ma 25 stron. Po wygenerowaniu i zatwierdzeniu zmian oba pliki znajdą się w katalogu głównym. Nie ma już duplikatów z końcówką `-1`.
 
 ### Jak odtworzyć oba PDF-y na Ubuntu
 
