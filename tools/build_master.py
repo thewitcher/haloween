@@ -207,12 +207,6 @@ class PrintSeal(Flowable):
   c.setFont('DV',9);c.drawCentredString(240,58,'ZACHOWAJ DO KOŃCA GRY');c.restoreState()
 
 def build_handouts(dst):
- story=[P('MATERIAŁY DO DRUKU','title'),P('Siedem światów · wszystko w jednym pliku','subtitle'),P('Wydrukuj pojedynczo lub wszystkie strony na A4. Materiały wycinaj po liniach lub ramkach. Tam, gdzie opis mówi „napisz UV”, po wydrukowaniu użyj niewidzialnego atramentu; zwykła drukarka nie wydrukuje niewidzialnego szyfru.'),P('W TYM PLIKU','h1')]
- story.append(tbl([['Świat','Karty / elementy do wydrukowania'],['I — salon','6 kart bestii + Pieczęć I + etykieta'],['II — sypialnia','3 kartki lustrzane + Pieczęć II'],['III — kuchnia','Instrukcja obrazkowa Enigmy + oznaczenia części + Pieczęć III'],['IV — gabinet','4 tarcze + 4 symbole + Pieczęć IV'],['V — pokój Emilki','6 symboli ksiąg + notatnik + Pieczęć V'],['VI — pokój Zosi','Karty Volta, tabela, mikroskop, notatnik + Pieczęć VI'],['VII — garderoba','60 puzzli, list Morthara, słowo WOLNOŚĆ, Pieczęć VII, dyplomy']], [145,360]));story.append(Spacer(1,18));story.append(P('DODATKOWE PRZYGOTOWANIE — NIE DA SIĘ WYDRUKOWAĆ ZWYKŁĄ DRUKARKĄ','h2'));story.append(P('Atramentem UV ręcznie oznacz strony sześciu książek i sześć kopert z rezystorami. Na rewersie całego arkusza 60 puzzli zapisz zagadkę o Kasprowym Wierchu PRZED rozcięciem. Kody rozwiązania i dokładne kryjówki znajdują się wyłącznie w PDF-ie organizatora.'));story.append(Spacer(1,12));story.append(P('UWAGA: kartę z magicznym słowem i list Morthara włóż do zamkniętej skrzyni. Nie zostawiaj wydrukowanych odpowiedzi na widoku.','quote'))
- guide_intro=OUT/'_print_intro.pdf'
- doc=SimpleDocTemplate(str(guide_intro),pagesize=A4,rightMargin=MARGIN,leftMargin=MARGIN,topMargin=47,bottomMargin=44)
- doc.build(story,onFirstPage=lambda c,d:page_frame(c,d,'DO WYDRUKU'),onLaterPages=lambda c,d:page_frame(c,d,'DO WYDRUKU'))
-
  def textpage(filename,parts,tag='DO WYDRUKU'):
   arr=[]
   for typ,t in parts:
@@ -262,16 +256,6 @@ def build_handouts(dst):
      ('subtitle','Siedem etykiet do wycięcia i rozłożenia obok części urządzenia.'),
      ('table',station_table),
  ])
- clocknote=textpage('clock_notes',[
- ('title','DZIENNIK ZEGARMISTRZA'),('subtitle','Karta zapisu do Świata IV — dzieci korzystają z logicznych wskazówek NA TABLECIE'),
- ('quote','„Zatrzymać czas nie znaczy zatrzymać koło. Prawdziwa chwila ujawnia się tylko w odpowiednim świetle”. — Aureliusz'),
- ('table',tbl([['Symbol','Cyfra odczytana przez światło'],['KSIĘŻYC','………………………………'],['KRUK','………………………………'],['KLUCZ','………………………………'],['KLEPSYDRA','………………………………']],[240,265])),
- ('spacer','20'),('p','Nie ustawiajcie cyfr w kolejności ustawienia silników! Strażniczka II otrzymała na swoim tablecie zasady właściwej kolejności.')])
- booklog=textpage('book_logs',[
- ('title','DZIENNIK BEZIMIENNEJ BIBLIOTEKARKI'),('subtitle','Świat V — zapisujcie jedynie znaki UV z prawidłowych stron'),
- ('quote','„Morthar pozostawił na kartach fałszywe litery. Tylko właściwa strona każdej księgi przechowuje prawdę”.'),
- ('table',tbl([['Symbol księgi','Odnaleziona strona','Litera / litery UV'],['KSIĘŻYC','…………','…………'],['KRUK','…………','…………'],['KLUCZ','…………','…………'],['PAJĄK','…………','…………'],['WĄŻ','…………','…………'],['ŚWIECA','…………','…………']],[150,170,185])),
- ('spacer','25'),('h2','Kolejność symboli ustalona z obu tabletów'),('p','1. ………………………  2. ………………………  3. ………………………'),('p','4. ………………………  5. ………………………  6. ………………………'),('p','Tajemnicze imię: …………………………………………………………')])
  seven=textpage('seal7',[
  ('title','OSTATNIA PIECZĘĆ'),('subtitle','Jeśli chcesz, włóż ją do skrzyni obok listu Morthara, kartki z zaklęciem i słodyczy.'),('seal7','')])
 
@@ -280,9 +264,6 @@ def build_handouts(dst):
   return textpage('seal_'+str(number),[('title','PIECZĘĆ '+roman+' — '+title),('subtitle','Wytnij ozdobną kartę. Włóż do koperty świata '+str(number)+' razem z DOKŁADNIE 10 puzzlami.'),('seal_custom',(roman,title,code))])
 
  # Open all inputs: key assets, write handwritten cards as supplementary pages
- booknote=textpage('books_symbols_note',[('title','SYMBOLY KSIĄG'),('p','Wytnij znaki z kolejnej strony i przyklej na sześć książek. Nie pisz numerów stron ani ukrytych liter zwykłym długopisem. Atrament UV i prawidłowe strony opisano tylko w instrukcji organizatora.')])
- uvnote=textpage('uv_letter_note',[('title','KOPERTY PROFESORA VOLTA'),('subtitle','Świat VI — sześć małych kopert z rezystorami'),('quote','Sześć przesyłek. Sześć kolorowych kodów. Litery zobaczycie tylko w niewidzialnym świetle.'),('p','Użyj sześciu zwykłych małych kopert. Dopiero po przygotowaniu rezystorów dorosły zapisze na każdej JEDNĄ literę UV. Nie drukuj widzialnych liter i nie numeruj kopert, bo kolejność wyznaczą dopiero pomiary.')])
-
  seals={
   1:seal_sheet(1,'I','KRYPTA SZEŚCIU BESTII','KRUK-583'),
   2:seal_sheet(2,'II','GALERIA LUSTRZANYCH SZEPTÓW','LUSTRO-426'),
@@ -343,18 +324,6 @@ def build_handouts(dst):
    doc2=fitz.open();page=doc2.new_page(width=A4[1],height=A4[0]);page.insert_image(fitz.Rect(22,22,A4[1]-22,A4[0]-22),filename=str(path),keep_proportion=True)
   else:
    doc2=fitz.open(path)
-   if 'Wprowadzenie, mikroskop' in title:
-    # Correct missing emoji glyphs in three legacy chapter headings.
-    titles={1:'DRUGA MISJA — TAJEMNICA MIKROSKOPU',
-            2:'TAJNA ŚCIĄGA PROFESORA VOLTA',
-            3:'DZIENNIK BADACZEK'}
-    fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
-    for k,titletext in titles.items():
-     pg=doc2[k]
-     pg.add_redact_annot(fitz.Rect(45,46,540,71),fill=(1,1,1))
-     pg.apply_redactions(images=0,graphics=0,text=0)
-     pg.insert_font(fontname='DejaBoldFix',fontfile=fontfile)
-     pg.insert_text((48,65),titletext,fontname='DejaBoldFix',fontsize=17,color=(0.32,0.22,0.39),overlay=True)
   pages=indices if indices is not None else list(range(len(doc2)))
   for no in pages:result.insert_pdf(doc2,from_page=no,to_page=no)
   bookmarks.append([1,title,first]);doc2.close()
@@ -364,14 +333,17 @@ def build_handouts(dst):
   pg.apply_redactions(images=0,graphics=0,text=0)
   pg.insert_text((481,831),f'Strona {no} / {len(result)}',fontsize=8,color=(0.37,0.34,0.43))
  result.set_toc(bookmarks)
- result.set_metadata({'title':'Klątwa Siedmiu Światów — wszystkie materiały do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
+ result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
+ for temporary in OUT.glob('_*.pdf'):
+  try: temporary.unlink()
+  except OSError: pass
  return sections
 
 if __name__=='__main__':
  a=OUT/'Instrukcja_organizatora.pdf'; b=OUT/'Materialy_do_druku.pdf'
  build_guide(a);sections=build_handouts(b)
  print(a,a.stat().st_size,'bytes',len(fitz.open(a)),'pages')
- print(b,b.stat().st_size,'bytes',len(fitz.open(b)),'pages')
+ print(b,b.stat().st_size,'bytes',len(fitz.open(b)),'pages (physical materials only)')
  for title,src,pg,kind in sections: print(title,('all' if pg is None else pg))
