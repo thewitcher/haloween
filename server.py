@@ -99,7 +99,7 @@ class Handler(BaseHTTPRequestHandler):
                     if not all(w7["pieces"].values()): return self.reply({"error":"Najpierw ułóżcie wszystkie 60 puzzli i odczytajcie wiadomość UV"},409)
                     if str(data.get("word","")).strip().upper()!=FINAL_MAGIC: return self.reply({"error":"To nie jest słowo ze skrzyni."},409)
                     w7["magic"][role]=True
-                    if w7.get("stopped_at") is None: w7["stopped_at"]=time.time()
+                    if all(w7["magic"].values()) and w7.get("stopped_at") is None: w7["stopped_at"]=time.time()
                     save();return self.reply({"ok":True})
             if path.startswith("/api/world6/"):
                 if not all(STATE["world5"]["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat V"},409)
