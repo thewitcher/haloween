@@ -25,7 +25,7 @@ ASSETS={
 'monsters':'assets/zrodla/karty_potworow.png',
 'world2':'assets/zrodla/lustrzane_wiadomosci.pdf',
 'enigma':'assets/zrodla/enigma_instrukcja_obrazkowa.pdf',
-'discs':'assets/zrodla/tarcze_zegara.pdf',
+'discs':'tarcze_7_2_4_test.pdf',
 'symbols4':'assets/zrodla/symbole_zegara.pdf',
 'books5':'assets/zrodla/symbole_ksiazek.pdf',
 'final7':'assets/zrodla/list_morthara_i_zaklecie.pdf'
@@ -93,7 +93,7 @@ p('Ważne: źródłem prawdy są aktualne etapy aplikacji i ostatnie ustalenia. 
 breakp()
 h('00 · Przygotowania ogólne i uruchomienie')
 hh('Sprzęt i rzeczy do zebrania')
-p('Laptop z Ubuntu i Pythonem 3, domowe Wi-Fi, dwa tablety (Strażniczka I = Zosia, Strażniczka II = Emilka), ładowarki, czołówki, nożyczki, taśma papierowa, sześć kopert na pieczęcie, sześć MAŁYCH kopert na rezystory, długopis z tuszem UV i latarką UV, lustro, sześć książek z co najmniej 50 stronami, mikroskop z oświetleniem, komplet czterech silniczków z papierowymi tarczami i osłonami, stroboskop, Arduino UNO z Enigmą, czterocyfrowa kłódka oraz skrzynia.')
+p('Laptop z Ubuntu i Pythonem 3, domowe Wi-Fi, dwa tablety (Strażniczka I = Zosia, Strażniczka II = Emilka), ładowarki, czołówki, nożyczki, taśma papierowa, sześć kopert na pieczęcie, sześć MAŁYCH kopert na rezystory, długopis z tuszem UV i latarką UV, lustro, sześć książek z co najmniej 50 stronami, mikroskop z oświetleniem, jeden silnik z osłoną i cztery wymienne tarcze papierowe (średnica 10 cm), taśma klejąca, stroboskop, Arduino UNO z Enigmą, czterocyfrowa kłódka oraz skrzynia.')
 p('Materiały: wydrukowane karty i pieczęcie; <b>gotowe, prawdziwe puzzle składające się z dokładnie 60 elementów</b> (jeden komplet, nie kilka zestawów); dwie sztywne, płaskie tektury lub deski do odwracania układanki; długopis UV i latarka UV; skrzynia z czterocyfrową kłódką; słodycze i dyplomy.')
 hh('Zasilanie i bezpieczeństwo')
 p('Elektronikę montuje dorosły i kontroluje przy odłączonym zasilaniu. Nie używaj napięcia sieciowego na odsłoniętych przewodach. W eksperymencie ze stroboskopem nie kieruj błysków w oczy; przy nadwrażliwości na światło stosuj wariant bez stroboskopu. Ruchome tarcze osłoń. Mikroskop, UV i małe rezystory używaj pod nadzorem; nie świeć UV w oczy i nie pozwalaj wkładać drobnych elementów do ust. Nie chowaj kopert przy gniazdkach ani ostrych narzędziach.')
@@ -136,12 +136,12 @@ p('□ Wgraj skecz, wykonaj test wszystkich klawiszy. □ Sprawdź osobno niebie
 breakp()
 h('04 · GABINET — Mechanizm Zatrzymanego Czasu')
 hh('Ustaw urządzenie wcześniej')
-p('Przygotuj cztery fizyczne tarcze z powtarzaną cyfrą, cztery małe silniki DC 3–6 V i bezpieczne osłony. Oznacz stanowiska nieruchomymi symbolami, obok tarcz, nie bezpośrednio na nich: <b>KSIĘŻYC = 7</b>, <b>KRUK = 2</b>, <b>KLUCZ = 9</b>, <b>KLEPSYDRA = 4</b>. Tarcze drukuj w skali 100% i upewnij się, że są wyważone. Nie pozwalaj ich dotykać podczas pracy.')
-p('Jeżeli używasz z repozytorium układu NodeMCU V3 + 2×L298N, sprawdź zgodność połączeń ze skeczem <b>Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino</b>. Silniki L298N mają spadki napięcia — próba na 5 V może nie ruszyć. NodeMCU zasilaj osobnym USB, przy wspólnej masie GND, nie łącz dodatnich wyjść niezależnych ładowarek. Nie poprawiaj połączeń pod napięciem. Dokładny schemat został wcześniej opisany w starszych materiałach, lecz obecny pakiet opiera się na gotowym, przetestowanym mechanizmie.')
+p('Przygotuj <b>jeden osłonięty silnik</b> i cztery wymienne tarcze o średnicy 10 cm. Wytnij symbole z arkusza i <b>przyklej po jednym na odwrocie właściwej tarczy</b>: <b>KSIĘŻYC = 7</b>, <b>KRUK = 2</b>, <b>KLUCZ = 9</b>, <b>KLEPSYDRA = 4</b>. Drukuj w skali 100%. Tarcze muszą być wyważone i pewnie zamocowane taśmą. Przed każdą wymianą wyłącz zasilanie i poczekaj na całkowite zatrzymanie.')
+p('Jeżeli używasz NodeMCU V3 i sterownika L298N, aktualny skecz <b>Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino</b> obsługuje jeden silnik (kanał ENA/D1). Sprawdź rzeczywiste połączenia przed uruchomieniem; nie zmieniaj przewodów pod napięciem. Sterownik L298N ma spadek napięcia, dlatego wykonaj próbę na gotowym mechanizmie. Zasilanie silnika i mikrokontrolera musi mieć wspólną masę, ale nie wolno łączyć plusów dwóch niezależnych zasilaczy.')
 hh('Zagadki i wynik')
-p('Strażniczka I odczytuje cyfry przez zewnętrzny stroboskop, przy pomocy dorosłego. Strażniczka II otrzymuje w aplikacji logiczne wskazówki o kolejności symboli. Prawidłowy porządek: <b>KSIĘŻYC → KRUK → KLUCZ → KLEPSYDRA</b>; kod <b>7294</b>. Nie wystarczy ustawić tarcz w kolejności na biurku — kolejność wynika z zagadki.')
+p('Strażniczka I wybiera tarczę, <b>sprawdza symbol na odwrocie</b>, a dorosły mocuje ją taśmą na nieruchomym silniku i zamyka osłonę. Po uruchomieniu odczytują cyfrę stroboskopem, zapisują parę symbol–cyfra, wyłączają silnik i <b>czekają na pełne zatrzymanie przed wymianą tarczy</b>. Powtarzają to dla czterech tarcz. Strażniczka II układa symbole według wskazówek w aplikacji: <b>KSIĘŻYC → KRUK → KLUCZ → KLEPSYDRA</b>; kod <b>7294</b>. Kolejność wymiany tarcz nie ma znaczenia.')
 p('Kopertę <b>IV</b> z pieczęcią <b>CZAS-604</b> i 10 puzzlami schowaj <b>w szufladzie biurka w gabinecie</b>. Jeżeli zabawa stroboskopem jest niewskazana, dorosły powinien przygotować bezpieczny zastępczy sposób ujawnienia tych samych cyfr. Nie kieruj błysków w oczy.')
-p('□ Cztery tarcze się obracają i są osłonięte. □ Symbole stoją przy właściwych cyfrach. □ Stroboskop sprawdzony w warunkach pokoju. □ Koperta IV z 10 puzzlami jest w szufladzie.')
+p('□ Jeden silnik pracuje z osłoną. □ Cztery tarcze i symbole na odwrotach gotowe. □ Taśma mocująca, wyłączanie i pełne zatrzymanie przed wymianą sprawdzone. □ Stroboskop przetestowany. □ Koperta IV z 10 puzzlami w szufladzie.')
 breakp()
 h('05 · POKÓJ EMILKI — Biblioteka Zapomnianych Imion')
 p('Przygotuj sześć książek liczących co najmniej 50 stron. Każdą oznacz papierowym symbolem z drugiego PDF-u. Na stronie prawdziwej napisz UV właściwą literę (lub „NA”); na fałszywej — mylący znak. Nie odsłaniaj imienia Morweny przed rozwiązaniem.')
@@ -172,7 +172,7 @@ p('1. Po 6. pieczęci aplikacja wysyła do Komnaty Cienia.\n<br/>2. Dziewczynki 
 p('□ Kłódka otwiera się kodem 1987. □ List, kartka WOLNOŚĆ i słodycze znajdują się wewnątrz. □ Zestaw naprawdę ma 60 elementów. □ Napis UV jest czytelny i suchy. □ Dwie sztywne tektury pozwalają odwrócić ułożone puzzle bez rozsypania.')
 breakp()
 h('LISTA OSTATECZNA · przed wpuszczeniem dzieci')
-G.append(tbl([['Sprawdź','Stan'],['Dwa tablety + Wi-Fi + zsynchronizowany serwer','□'],['Przygotowane stanowiska, sprzęt i zasilanie','□'],['Sześć kart bestii w salonie','□'],['Trzy lustrzane kartki w sypialni','□'],['Działająca Enigma Morse’a w kuchni','□'],['Cztery osłonięte tarcze w gabinecie','□'],['Sześć ksiąg UV + długopis w piórniku','□'],['Sześć kopert rezystorów + mikroskop','□'],['Sześć kopert I–VI zawiera pieczęć i 10 puzzli','□'],['Skrzynia z kłódką 1987, listem, WOLNOŚĆ i nagrodami','□'],['Wszystkie 60 puzzli mają jedną wspólną wiadomość UV','□'],['Stare testowe dane gry zresetowano PRZED startem','□']], [435,70]));gap(10)
+G.append(tbl([['Sprawdź','Stan'],['Dwa tablety + Wi-Fi + zsynchronizowany serwer','□'],['Przygotowane stanowiska, sprzęt i zasilanie','□'],['Sześć kart bestii w salonie','□'],['Trzy lustrzane kartki w sypialni','□'],['Działająca Enigma Morse’a w kuchni','□'],['Jeden osłonięty silnik + cztery wymienne tarcze i taśma','□'],['Sześć ksiąg UV + długopis w piórniku','□'],['Sześć kopert rezystorów + mikroskop','□'],['Sześć kopert I–VI zawiera pieczęć i 10 puzzli','□'],['Skrzynia z kłódką 1987, listem, WOLNOŚĆ i nagrodami','□'],['Wszystkie 60 puzzli mają jedną wspólną wiadomość UV','□'],['Stare testowe dane gry zresetowano PRZED startem','□']], [435,70]));gap(10)
 quote('OSTATNIA PRÓBA: uruchom obu Strażniczek w trybie testowym i sprawdź fizycznie wszystkie kryjówki, kody, rewers UV, jakość mikroskopu i działanie zamka. Nie resetuj ani nie zmieniaj materiałów, gdy dzieci już grają.')
 p('Uwaga o źródłach: skecz i instrukcja elektroniczna pochodzą z bieżącego repozytorium. Ustalony komplet 60 puzzli i finał WOLNOŚĆ zastępują dawne warianty zakończenia. Sam dokument nie potwierdza, czy fizyczne układy są już poprawnie zmontowane — wymagana jest próba sprzętowa.')
 
@@ -192,6 +192,93 @@ class PrintSeal(Flowable):
   c.setFont('DV-B',11);c.drawCentredString(240,160,self.title)
   c.setFont('DVS-B',22);c.drawCentredString(240,104,self.code)
   c.setFont('DV',9);c.drawCentredString(240,58,'ZACHOWAJ DO KOŃCA GRY');c.restoreState()
+
+
+# Świat IV: tarcze 7, 4 i 2A są kopiowane bez skalowania z nowego
+# źródła w katalogu głównym. Dziewiątka jest odtworzona z wektorowych
+# współrzędnych sprawdzonej tarczy 6-sektorowej (bez starego wzoru 12×9).
+def build_world4_discs():
+ source=fitz.open(locate('discs'))
+ if len(source)<2:raise ValueError('Nowy plik tarcz musi mieć co najmniej 2 strony')
+ output=fitz.open()
+ cx=184.252; upper=243.7795; lower=583.937
+ radius=50*mm
+ def label(page,x,y,text,size=9,bold=False):
+  fontname='dvbold' if bold else 'dvregular'
+  fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf' if bold else '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+  page.insert_font(fontname=fontname,fontfile=fontfile)
+  page.insert_text((x,y),text,fontname=fontname,fontsize=size,color=(.16,.15,.22))
+ for page_number in range(2):
+  page=output.new_page(width=A4[0],height=A4[1])
+  label(page,44,40,'ŚWIAT IV — WYMIENNE TARCZE ZEGARMISTRZA',14,True)
+  label(page,44,61,'Jedna tarcza na raz • wytnij po obwodzie • wydruk 100%',9)
+  for row in range(2):
+   if page_number==1 and row==1:continue
+   source_row=row if page_number==0 else 0
+   source_y=(upper,lower)[source_row]
+   target_y=(upper,lower)[row]
+   clip=fitz.Rect(cx-radius-2,source_y-radius-2,cx+radius+2,source_y+radius+2)
+   target=fitz.Rect(cx-radius-2,target_y-radius-2,cx+radius+2,target_y+radius+2)
+   page.show_pdf_page(target,source,page_number,clip=clip)
+  if page_number==1:
+   # Cyfra 9: dokładne końce sześciu kresek działającej tarczy,
+   # przeliczone z pierwszego na dolny środek strony.
+   page.draw_circle((cx,lower),radius,color=(0,0,0),width=.27)
+   page.draw_circle((cx,lower),1.4*mm,color=(0,0,0),width=.45)
+   nine_segments=[
+    ((197.2913,126.1418),(171.2126,126.1418)),
+    ((276.4081,173.2253),(262.4153,181.3042)),
+    ((273.0201,277.6821),(259.0274,269.6034)),
+    ((171.2126,318.8976),(197.2913,318.8976)),
+    ((77.0722,288.3120),(91.0650,280.2333)),
+    ((107.3059,184.2982),(94.2665,206.8830)),
+   ]
+   shift=lower-upper
+   for a,b in nine_segments:
+    page.draw_line((a[0],a[1]+shift),(b[0],b[1]+shift),color=(0,0,0),width=6.5197,lineCap=1)
+  labels=(
+   [('7','KSIĘŻYC','2 fragmenty co 180°'),('4','KLEPSYDRA','3 fragmenty co 120°')]
+   if page_number==0 else
+   [('2 (wariant A)','KRUK','5 fragmentów co 72°'),('9','KLUCZ','6 fragmentów co 60°')]
+  )
+  for row,(digit,symbol,detail) in enumerate(labels):
+   y=(upper,lower)[row]
+   label(page,344,y-24,'CYFRA '+digit,12,True)
+   label(page,344,y,'SYMBOL: '+symbol,9)
+   label(page,344,y+20,detail,8)
+   label(page,344,y+44,'Symbol naklej na odwrocie.',7.5)
+  page.draw_line((44,791),(44+50*mm,791),color=(0,0,0),width=1)
+  label(page,44,806,'50 mm — kontrola skali',8)
+  label(page,44,824,'Tarczę wymienia dorosły przy wyłączonym silniku.',7)
+ path=OUT/'_world4_discs.pdf'
+ output.save(str(path),garbage=4,deflate=True)
+ output.close();source.close()
+ return path
+
+def build_world4_symbols():
+ source=fitz.open(locate('symbols4'))
+ output=fitz.open()
+ output.insert_pdf(source,from_page=0,to_page=0)
+ source.close()
+ page=output[0]
+ page.add_redact_annot(fitz.Rect(45,655,560,792),fill=(1,1,1))
+ page.apply_redactions(images=0,graphics=0,text=0)
+ font='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+ bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+ page.insert_font(fontname='dv',fontfile=font)
+ page.insert_font(fontname='dvbold',fontfile=bold)
+ page.insert_text((54,681),'JAK PRZYGOTOWAĆ TARCZE?',fontname='dvbold',fontsize=11,color=(.25,.18,.32))
+ for y,line in [
+  (705,'1. Wytnij cztery symbole i przyklej każdy na ODWROCIE właściwej tarczy.'),
+  (724,'2. Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 (tylko dla dorosłego).'),
+  (743,'3. Przed zamontowaniem sprawdź symbol; po odczycie zapisz symbol i cyfrę.'),
+  (762,'4. Wymieniaj tarcze wyłącznie po wyłączeniu i zatrzymaniu silnika.'),
+  (784,'Symbole nie określają kolejności kodu — rozstrzyga zagadka na tablecie.')
+ ]:page.insert_text((54,y),line,fontname='dv',fontsize=8.2,color=(.22,.18,.27))
+ path=OUT/'_world4_symbols.pdf'
+ output.save(str(path),garbage=4,deflate=True)
+ output.close()
+ return path
 
 def build_handouts(dst):
  def textpage(filename,parts,tag='DO WYDRUKU'):
@@ -279,6 +366,8 @@ def build_handouts(dst):
   return dest
  diploma_zosia=diploma_sheet('ZOSI','dyplom_zosia')
  diploma_emilka=diploma_sheet('EMILKI','dyplom_emilki')
+ world4_discs=build_world4_discs()
+ world4_symbols=build_world4_symbols()
  sections=[]
  def add(title,filename,pages=None,kind='pdf'):
   sections.append((title,filename,pages,kind))
@@ -290,8 +379,8 @@ def build_handouts(dst):
  add('III • Instrukcja obrazkowa Enigmy',locate('enigma'),None)
  add('III • Etykiety stanowisk',stations)
  add('III • Pieczęć',seals[3])
- add('IV • Cztery tarcze zegarmistrza',locate('discs'),[0,1,2,3])
- add('IV • Cztery symbole',locate('symbols4'),[0])
+ add('IV • Cztery wymienne tarcze (7, 4, 2, 9)',world4_discs)
+ add('IV • Symbole do przyklejenia na odwrotach',world4_symbols)
  add('IV • Pieczęć',seals[4])
  add('V • Sześć symboli ksiąg',locate('books5'),[2])
  add('V • Pieczęć',seals[5])
@@ -322,7 +411,7 @@ def build_handouts(dst):
  result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
- generated_names=['_labels.pdf','_enigma_stations.pdf','_seal7.pdf',
+ generated_names=['_labels.pdf','_enigma_stations.pdf','_seal7.pdf','_world4_discs.pdf','_world4_symbols.pdf',
                   '_dyplom_zosia.pdf','_dyplom_emilka.pdf'] + [
                     f'_seal_{number}.pdf' for number in range(1,7)]
  for name in generated_names:
