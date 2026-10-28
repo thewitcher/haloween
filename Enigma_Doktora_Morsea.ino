@@ -22,29 +22,72 @@ const byte wordCount=sizeof(words)/sizeof(words[0]);
 const char* morse(char c){
  switch(c){case 'A':return ".-";case 'B':return "-...";case 'C':return "-.-.";case 'D':return "-..";case 'E':return ".";case 'F':return "..-.";case 'G':return "--.";case 'H':return "....";case 'I':return "..";case 'J':return ".---";case 'K':return "-.-";case 'L':return ".-..";case 'M':return "--";case 'N':return "-.";case 'O':return "---";case 'P':return ".--.";case 'Q':return "--.-";case 'R':return ".-.";case 'S':return "...";case 'T':return "-";case 'U':return "..-";case 'V':return "...-";case 'W':return ".--";case 'X':return "-..-";case 'Y':return "-.--";case 'Z':return "--..";default:return "";}
 }
+// Jednostka Morse'a: kropka = 1, kreska = 3.
+// Odstęp między elementami litery = 1, między literami = 3 jednostki.
+// Odstęp między słowami = 5000 ms (liczony od zgaśnięcia ostatniego błysku).
 const unsigned long UNIT=260, WORD_GAP=5000, START_GAP=5000;
-byte phase=0,wordIndex=0,charIndex=0,symbolIndex=0;
+enum TxState { BLUE_START, GREEN_ON, GREEN_OFF };
+TxState txState=BLUE_START;
+byte wordIndex=0, charIndex=0, symbolIndex=0;
 unsigned long deadline=0;
 bool solved=false;
 String entry="";
 unsigned long temporaryUntil=0;
-void showEntry(){display.displayClear();display.displayText(entry.c_str(),PA_CENTER,0,0,PA_PRINT,PA_NO_EFFECT);display.displayReset();}
-void showText(const char* s){display.displayClear();display.displayText(s,PA_CENTER,65,0,PA_SCROLL_LEFT,PA_SCROLL_LEFT);display.displayReset();}
-void startCycle(unsigned long now){digitalWrite(GREEN_PIN,LOW);digitalWrite(BLUE_PIN,HIGH);phase=0;wordIndex=charIndex=symbolIndex=0;deadline=now+START_GAP;}
-void stepMorse(unsigned long now){
- if(solved||now<deadline)return;
- if(phase==0){digitalWrite(BLUE_PIN,LOW);phase=1;}
- else if(phase==1){digitalWrite(GREEN_PIN,LOW);phase=2;deadline=now+UNIT;return;}
- else if(phase==2){symbolIndex++;phase=1;}
- else if(phase==3){charIndex++;symbolIndex=0;phase=1;}
- else if(phase==4){wordIndex++;charIndex=symbolIndex=0;phase=1;}
+void showEntry(){
+ display.displayClear();
+ display.displayText(entry.c_str(),PA_CENTER,0,0,PA_PRINT,PA_NO_EFFECT);
+ display.displayReset();
+}
+void showText(const char* s){
+ display.displayClear();
+ display.displayText(s,PA_CENTER,65,0,PA_SCROLL_LEFT,PA_SCROLL_LEFT);
+ display.displayReset();
+}
+void startCycle(unsigned long now){
+ digitalWrite(GREEN_PIN,LOW);
+ digitalWrite(BLUE_PIN,HIGH);
+ txState=BLUE_START;
+ wordIndex=charIndex=symbolIndex=0;
+ deadline=now+START_GAP;
+}
+void startSymbol(unsigned long now){
  if(wordIndex>=wordCount){startCycle(now);return;}
- const char* word=words[wordIndex];
- if(!word[charIndex]){phase=4;deadline=now+WORD_GAP;return;}
- const char* code=morse(word[charIndex]);
- if(!code[symbolIndex]){phase=3;deadline=now+2*UNIT;return;}
+ const char* code=morse(words[wordIndex][charIndex]);
+ char symbol=code[symbolIndex];
+ if(symbol!='.' && symbol!='-'){startCycle(now);return;}
  digitalWrite(GREEN_PIN,HIGH);
- deadline=now+(code[symbolIndex]=='-'?3*UNIT:UNIT);
+ txState=GREEN_ON;
+ deadline=now+(symbol=='-'?3*UNIT:UNIT);
+}
+void stepMorse(unsigned long now){
+ if(solved || (long)(now-deadline)<0)return;
+ if(txState==BLUE_START){
+  digitalWrite(BLUE_PIN,LOW);
+  startSymbol(now);
+  return;
+ }
+ if(txState==GREEN_OFF){
+  startSymbol(now);
+  return;
+ }
+ // Koniec błysku: dopiero teraz odmierzamy ciszę.
+ digitalWrite(GREEN_PIN,LOW);
+ const char* code=morse(words[wordIndex][charIndex]);
+ symbolIndex++;
+ if(code[symbolIndex]){
+  deadline=now+UNIT; // przerwa wewnątrz litery
+ }else{
+  symbolIndex=0;
+  charIndex++;
+  if(words[wordIndex][charIndex]){
+   deadline=now+3*UNIT; // przerwa między literami
+  }else{
+   wordIndex++;
+   charIndex=0;
+   deadline=now+(wordIndex<wordCount?WORD_GAP:3*UNIT);
+  }
+ }
+ txState=GREEN_OFF;
 }
 void setup(){pinMode(BLUE_PIN,OUTPUT);pinMode(GREEN_PIN,OUTPUT);digitalWrite(BLUE_PIN,LOW);digitalWrite(GREEN_PIN,LOW);display.begin();display.setIntensity(2);showText("ENIGMA");startCycle(millis());}
 void loop(){
