@@ -21,20 +21,24 @@ RACES=["Elfka Księżyca","Wampirzyca","Wróżka Cieni","Czarownica"]
 AVATARS=["🌙","🦇","🧚","🔮","🐈‍⬛","🕯️","🦉","✨"]
 BEASTS={"Wampir":"7","Wilkołak":"2","Mumia":"9","Wiedźma":"4","Duch":"1","Kościotrup":"6"}
 ENVELOPE_CODE="KRUK-583"
+ENVELOPE_2_CODE="LUSTRO-426"
 SEARCH_ORDER=["Kościotrup","Duch","Wiedźma","Mumia","Wampir","Wilkołak"]
-def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}}}
+def fresh(): return {"players":{"1":None,"2":None},"page":0,"oaths":{"1":False,"2":False},"started_at":None,"world1":{"found":[],"numbers":{},"eliminated":None,"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}},"world2":{"found":[],"answers":{"1":False,"2":False},"envelope":{"1":False,"2":False}}}
 try: STATE=json.loads(SAVE.read_text(encoding="utf-8"))
 except (FileNotFoundError,ValueError): STATE=fresh()
 def save(): SAVE.write_text(json.dumps(STATE,ensure_ascii=False,indent=2),encoding="utf-8")
 if "world1" not in STATE: STATE["world1"]=fresh()["world1"]
 STATE["world1"].setdefault("eliminated",None)
+STATE.setdefault("world2",fresh()["world2"])
 def snapshot(role):
     players=STATE["players"]; page=STATE["page"]; started=STATE["started_at"]
     phase="create" if not players[role] else "waiting" if not all(players.values()) else "story" if page<len(PAGES) else "playing" if started else "oath"
     reader=str(page%2+1) if page<len(PAGES) else None
     w=STATE["world1"]
     stage="search" if len(w["found"])<6 or len(w["numbers"])<6 else "eliminate" if w["eliminated"] is None else "solve" if not all(w["answers"].values()) else "envelope" if not all(w["envelope"].values()) else "finished"
-    return {"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
+    w2=STATE["world2"]
+    stage2="search" if len(w2["found"])<3 else "solve" if not all(w2["answers"].values()) else "envelope" if not all(w2["envelope"].values()) else "finished"
+    return {"world2":{"stage":stage2,"found":w2["found"],"answers":w2["answers"],"envelope":w2["envelope"]},"world1":{"stage":stage,"found":w["found"],"number_count":len(w["numbers"]),"numbers":w["numbers"],"eliminated":w["eliminated"],"answers":w["answers"],"envelope":w["envelope"],"search_order":SEARCH_ORDER if role=="1" else []},"role":role,"profile":players[role],"players":players,"phase":phase,"page_index":page,"page_count":len(PAGES),"reader":reader,"page":{"title":PAGES[page][0],"text":PAGES[page][1]} if phase=="story" and role==reader else None,"oaths":STATE["oaths"],"remaining":max(0,7200-int(time.time()-started)) if started else 7200}
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def reply(self,obj,status=200,html=False):
@@ -62,6 +66,23 @@ class Handler(BaseHTTPRequestHandler):
                 STATE.clear(); STATE.update(fresh()); save(); return self.reply({"ok":True})
             if role not in ("1","2"): return self.reply({"error":"Nieprawidłowy gracz"},400)
             w=STATE["world1"]
+            if path.startswith("/api/world2/"):
+                if not all(w["envelope"].values()): return self.reply({"error":"Najpierw ukończcie Świat I"},409)
+                w2=STATE["world2"]
+                if path=="/api/world2/find":
+                    if role!="1": return self.reply({"error":"To zadanie Strażniczki I"},403)
+                    item=str(data.get("item",""))
+                    if item not in ("1","2","3"): return self.reply({"error":"Nieznana wiadomość"},400)
+                    if item not in w2["found"]: w2["found"].append(item)
+                    save(); return self.reply({"ok":True})
+                if path=="/api/world2/answer":
+                    if len(w2["found"])!=3: return self.reply({"error":"Odnajdźcie trzy wiadomości"},409)
+                    if " ".join(str(data.get("code","")).upper().split())!="NOC MA OCZY": return self.reply({"error":"Hasło nie otwiera zwierciadła"},409)
+                    w2["answers"][role]=True; save(); return self.reply({"ok":True})
+                if path=="/api/world2/envelope":
+                    if not all(w2["answers"].values()): return self.reply({"error":"Obie Strażniczki muszą podać hasło"},409)
+                    if str(data.get("code","")).strip().upper()!=ENVELOPE_2_CODE: return self.reply({"error":"Niepoprawny kod Pieczęci II"},409)
+                    w2["envelope"][role]=True; save(); return self.reply({"ok":True})
             if path=="/api/world1/find":
                 if not STATE["started_at"] or role!="1": return self.reply({"error":"Ta czynność należy do Strażniczki I"},403)
                 beast=str(data.get("beast",""))
