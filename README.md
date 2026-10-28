@@ -14,37 +14,43 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 
 **Reset przed kolejną próbą:** przy uruchomionym serwerze: `python3 reset.py`. Uwaga: usuwa postęp obu graczy; nie używaj go podczas zabawy.
 
-## Jedna dokumentacja i jeden komplet do druku
+## Dwa dokumenty w katalogu głównym — wersja obowiązująca
 
-Docelowy zestaw zawiera dokładnie dwa dokumenty:
+W katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
 
-- **`01_INSTRUKCJA_ORGANIZATORA.pdf`** – wszystkie kryjówki, przygotowanie urządzeń, odpowiedzi i kontrola przed startem (tylko dla dorosłego).
-- **`02_MATERIALY_DO_DRUKU.pdf`** – karty bestii, lustra, etykiety Enigmy, tarcze, symbole książek, karty mikroskopu i rezystorów, pieczęcie I–VII, 60 puzzli, list Morthara, zaklęcie oraz dyplomy.
+- **`Instrukcja_organizatora.pdf`** – 10 stron: przygotowanie domu, kryjówki, wyposażenie, odpowiedzi, zasilanie urządzeń, kontrola przed startem. **Tylko dla dorosłego — zawiera rozwiązania.**
+- **`Materialy_do_druku.pdf`** – 28 stron: tylko fizyczne elementy potrzebne do rozstawienia i wręczenia: karty sześciu bestii, trzy lustrzane wiadomości, papierowa instrukcja budowania Enigmy i etykiety jej części, cztery tarcze i symbole, symbole sześciu książek, siedem pieczęci, etykiety kopert, plansza 60 puzzli, list Morthara, kartka z zaklęciem i dwa dyplomy.
 
-Źródło odtwarzalne tych dokumentów: **`tools/build_master.py`**. Dopóki oba wygenerowane PDF-y nie zostaną bezpiecznie skopiowane do folderu `docs/` w repozytorium, **stare PDF-y w katalogach światów stanowią materiały źródłowe i nie wolno ich usuwać**.
+**Nie drukujemy osobno** opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
 
-Wersja lokalna / odtworzenie PDF-ów:
+**Uwaga po aktualizacji generatora:** jeżeli `Materialy_do_druku.pdf` ma jeszcze **37 stron**, jest starszą wersją. Uruchom generator poniżej albo podmień PDF na aktualną wersję **28-stronicową**. Nie korzystaj z obu wersji jednocześnie.
+
+### Jak odtworzyć oba PDF-y na Ubuntu
+
+Źródłem do generowania jest `tools/build_master.py`. Stare PDF-y w katalogach poszczególnych światów są **wejściowymi zasobami graficznymi generatora** — nie usuwaj ich, dopóki generator z nich korzysta, nawet jeśli nie trzeba ich osobno drukować.
 
 ```bash
 cd ~/haloween
+git pull
 python3 -m venv .venv
 source .venv/bin/activate
 pip install reportlab pymupdf
-mkdir -p docs
-HALLOWEEN_ASSET_DIR=. HALLOWEEN_OUT_DIR=docs python3 tools/build_master.py
+HALLOWEEN_ASSET_DIR=. HALLOWEEN_OUT_DIR=. python3 tools/build_master.py
 ```
 
-Efekt: `docs/01_INSTRUKCJA_ORGANIZATORA.pdf` (10 stron) i `docs/02_MATERIALY_DO_DRUKU.pdf` (37 stron). Drukowanie: format A4, **skala 100%**, najlepiej pojedynczo. Stronę puzzli drukuj na kartonie i potnij dopiero **po naniesieniu i wyschnięciu tekstu UV na odwrocie**.
+Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**28 stron**) w katalogu głównym. Nie trzeba otwierać ani drukować pozostałych PDF-ów z podkatalogów.
 
-Możesz zapisać wynik w repozytorium:
+Aby zapisać aktualne wersje także na GitHubie:
 
 ```bash
-git add docs/01_INSTRUKCJA_ORGANIZATORA.pdf docs/02_MATERIALY_DO_DRUKU.pdf
-git commit -m "Dwa kompletne PDF-y na wszystkie światy"
+git add Instrukcja_organizatora.pdf Materialy_do_druku.pdf
+git commit -m "Komplet dokumentów: instrukcja i rekwizyty"
 git push
 ```
 
-**Uwaga dotycząca automatyzacji:** Workflow `.github/workflows/build-materials.yml` jest przygotowany do generowania PDF-ów, ale wymaga działających runnerów GitHub Actions. Jeśli Actions nie przydziela runnera, użyj powyższej metody lokalnej. Nie usuwaj plików źródłowych przed zweryfikowaniem wyniku.
+Wydruk: A4, rzeczywista skala **100%**, jednostronnie. Planszę 60 puzzli przed pocięciem zapisz na odwrocie atramentem UV, poczekaj aż wyschnie, a następnie podziel na 60 elementów i rozłóż po 10 w kopertach I–VI. Karty z magicznym słowem i list Morthara włóż do skrzyni, nie pozostawiaj ich na widoku.
+
+GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow nie ma przydzielonego działającego runnera, należy wykonać polecenia lokalnie. **Najważniejsze są dwa pliki PDF w katalogu głównym**, nie pośrednie dokumenty ani stare wersje.
 
 ## Przebieg siedmiu światów
 
