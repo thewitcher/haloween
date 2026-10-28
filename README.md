@@ -54,13 +54,20 @@ GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow n
 
 ## Układ repozytorium
 
-- `Instrukcja_organizatora.pdf`, `Materialy_do_druku.pdf` — dwa zbiorcze dokumenty do gry (w materiałach: cztery tarcze 10 cm na dwóch stronach A4).\n- `tarcze_7_2_4_test.pdf` — źródłowy zestaw próbny, w tym rezerwowa dwójka B; nie drukuj go, jeśli korzystasz z pakietu zbiorczego.
+- `Instrukcja_organizatora.pdf`, `Materialy_do_druku.pdf` — dwa zbiorcze dokumenty do gry (w materiałach: cztery tarcze 10 cm na dwóch stronach A4).
+- `tarcze_7_2_4_test.pdf` — źródłowy zestaw próbny, w tym rezerwowa dwójka B; nie drukuj go, jeśli korzystasz z pakietu zbiorczego.
 - `index.html`, `server.py`, `reset.py` — aplikacja i obsługa stanu gry.
 - `Enigma_Doktora_Morsea.ino`, `Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino` — programy mikrokontrolerów (Świat IV: jeden silnik na D1/ENA).
 - `tools/build_master.py` — generator obu dokumentów.
 - `assets/zrodla/` — źródłowe grafiki, wyłącznie techniczne; **nie drukować osobno**.
 
-## Świat IV — nowa obsługa tarcz\n\nW gabinecie jest **jeden silnik**. Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy wyłączonym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.\n\n**Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna; tarcze 7, 2A i 4 z najnowszego PDF-u wymagają końcowego sprawdzenia na jednym silniku. Jeśli 2A okaże się nieczytelna, wariant 2B znajduje się na drugiej stronie źródłowego PDF-u. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.\n\n## Przebieg siedmiu światów
+## Świat IV — nowa obsługa tarcz
+
+W gabinecie jest **jeden silnik**. Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy wyłączonym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
+
+**Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna; tarcze 7, 2A i 4 z najnowszego PDF-u wymagają końcowego sprawdzenia na jednym silniku. Jeśli 2A okaże się nieczytelna, wariant 2B znajduje się na drugiej stronie źródłowego PDF-u. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.
+
+## Przebieg siedmiu światów
 
 | Świat | Pokój | Mechanika |
 | --- | --- | --- |
