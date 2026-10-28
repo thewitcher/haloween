@@ -14,45 +14,34 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 
 **Reset przed kolejną próbą:** przy uruchomionym serwerze: `python3 reset.py`. Uwaga: usuwa postęp obu graczy; nie używaj go podczas zabawy.
 
-## Dwa dokumenty w katalogu głównym — po regeneracji
+## Dwa obowiązujące PDF-y — bez GitHub Actions
 
-**Uwaga (Świat IV, 29.10.2026):** aplikacja i generator zostały zaktualizowane, ale GitHub Actions nie przydzielił runnera do automatycznej regeneracji PDF-ów. **Zapisane w repozytorium pliki `Instrukcja_organizatora.pdf` i `Materialy_do_druku.pdf` mogą nadal zawierać stary układ czterech silników i tarcz.** Przed grą uruchom lokalnie generator poniżej i zapisz wygenerowane PDF-y do repozytorium.
+W katalogu głównym używamy **wyłącznie dwóch dokumentów**. Przy kolejnych poprawkach zachowujemy ich nazwy i zastępujemy zawartość:
 
-Docelowo w katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
+- **`Instrukcja_organizatora.pdf`** — 10 stron; przygotowanie siedmiu światów, rozwiązania i bezpieczeństwo. **Tylko dla dorosłego.**
+- **`Materialy_do_druku.pdf`** — 25 stron; karty, pieczęcie, instrukcja Enigmy, cztery wymienne tarcze 10 cm na dwóch kartkach A4, symbole na odwroty, list i dyplomy.
 
-- **`Instrukcja_organizatora.pdf`** – 10 stron: przygotowanie domu, kryjówki, wyposażenie, odpowiedzi, zasilanie urządzeń, kontrola przed startem. **Tylko dla dorosłego — zawiera rozwiązania.**
-- **`Materialy_do_druku.pdf`** – 25 stron: tylko fizyczne elementy potrzebne do rozstawienia i wręczenia: karty sześciu bestii, trzy lustrzane wiadomości, papierowa instrukcja budowania Enigmy i etykiety jej części, dwie strony z czterema wymiennymi tarczami (7, 4, 2A, 9) i symbole do naklejenia na odwrotach, symbole sześciu książek, siedem pieczęci, etykiety kopert, list Morthara, kartka z zaklęciem i dwa dyplomy.
+**Ważne:** jeśli PDF-y w repozytorium mają jeszcze starszą treść, trzeba je jednokrotnie odświeżyć lokalnie. Zmiana generatora nie zmienia automatycznie gotowych plików PDF. Nie ma już workflow GitHub Actions.
 
-**Nie drukujemy osobno** planszy puzzli (korzystamy z prawdziwego zestawu 60 elementów) ani opowieści, poradników do mikroskopu, tabel barw rezystorów, dwóch przykładów liczenia oporności, dzienników notatek ani dodatkowych podpowiedzi. Te informacje są na odpowiednich tabletach. Wyjątek: obrazkowa instrukcja montażu Enigmy jest rekwizytem zadania, dlatego zostaje na papierze.
+### Aktualizacja PDF-ów na Ubuntu — jedno polecenie
 
-**Wersja po regeneracji:** `Instrukcja_organizatora.pdf` ma 10 stron, a `Materialy_do_druku.pdf` ma 25 stron. Po wygenerowaniu i zatwierdzeniu zmian oba pliki znajdą się w katalogu głównym. Nie ma już duplikatów z końcówką `-1`.
-
-### Jak odtworzyć oba PDF-y na Ubuntu
-
-Źródłem do generowania jest `tools/build_master.py`. **Siedem starszych materiałów źródłowych** znajduje się w `assets/zrodla/` (sześć oryginalnych PDF-ów z grafikami i jeden plik PNG). Nowe tarcze 7, 2A i 4 pochodzą z `tarcze_7_2_4_test.pdf` w katalogu głównym; sprawdzona dziewiątka jest odtworzona w generatorze z sześciu odcinków. To zasoby techniczne generatora, **nie są przeznaczone do osobnego drukowania**. Wszystkie starsze wersje wydruków zostały usunięte z katalogów światów.
+W terminalu w katalogu repozytorium:
 
 ```bash
 cd ~/haloween
 git pull
-python3 -m venv .venv
-source .venv/bin/activate
-pip install reportlab pymupdf
-HALLOWEEN_ASSET_DIR=. HALLOWEEN_OUT_DIR=. python3 tools/build_master.py
+bash tools/odswiez_pdf.sh --push
 ```
 
-Powstaną/odświeżą się pliki `Instrukcja_organizatora.pdf` (10 stron) i `Materialy_do_druku.pdf` (**25 stron**) w katalogu głównym. Nie trzeba przeglądać ani drukować PDF-ów z `assets/zrodla/`. Służą wyłącznie do automatycznego odtwarzania aktualnego pakietu.
+Skrypt sam tworzy lokalne środowisko `.venv`, instaluje `reportlab` i `pymupdf`, generuje i kontroluje **te same dwa PDF-y**, a z opcją `--push` zapisuje je do repozytorium GitHub. Jeśli chcesz tylko wygenerować pliki na laptopie, bez wysyłania ich na GitHub, uruchom `bash tools/odswiez_pdf.sh`. Jeśli Ubuntu zgłasza brak modułu `venv`, zainstaluj `python3-venv`.
 
-Aby zapisać aktualne wersje także na GitHubie:
+Nie trzeba niczego klikać w GitHub Actions. Nie tworzymy dodatkowych wersji typu „final”, „nowy”, „5V” czy „poprawiony”.
 
-```bash
-git add Instrukcja_organizatora.pdf Materialy_do_druku.pdf
-git commit -m "Komplet dokumentów: instrukcja i rekwizyty"
-git push
-```
+### Materiały źródłowe a druk
 
-Wydruk: A4, rzeczywista skala **100%**, jednostronnie. Przygotuj **prawdziwe puzzle z dokładnie 60 elementów** (nie drukuj ani nie wycinaj papierowych). Ułóż całość, odwróć ją między dwiema sztywnymi tekturami i napisz na rewersie zagadkę o Kasprowym Wierchu atramentem UV. Po wyschnięciu wymieszaj elementy i rozłóż **po 10 prawdziwych puzzli** w kopertach I–VI. Karty z magicznym słowem i list Morthara włóż do skrzyni, nie pozostawiaj ich na widoku.
+Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2A i 4 pochodzą z nowszego zestawu próbnego.
 
-GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow nie ma przydzielonego działającego runnera, należy wykonać polecenia lokalnie. **Najważniejsze są dwa pliki PDF w katalogu głównym**, nie pośrednie dokumenty ani stare wersje.
+Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Do finału używamy jednego **prawdziwego zestawu 60 puzzli**; nie drukujemy papierowych puzzli. Układamy je, nanosimy wspólną wskazówkę na odwrocie tuszem UV, a następnie dzielimy na sześć kopert po dziesięć elementów.
 
 ## Układ repozytorium
 
@@ -66,7 +55,7 @@ GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow n
 
 ## Świat IV — nowa obsługa tarcz
 
-W gabinecie jest **jeden silnik DC 3–6 V zasilany bezpośrednio z 5 V** — bez NodeMCU i L298N. Można dodać prosty wyłącznik o parametrach odpowiednich do prądu silnika. Schemat: **+5 V → opcjonalny wyłącznik → + silnika**, a **– silnika → GND zasilacza**. Zasilacz powinien zapewnić prąd rozruchowy silnika. Przewody zabezpiecz przed zwarciem.  Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy odłączonym zasilaniu i zatrzymanym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
+W gabinecie jest **jeden silnik DC 3–6 V zasilany bezpośrednio z 5 V** — bez NodeMCU i L298N. Można dodać prosty wyłącznik o parametrach odpowiednich do prądu silnika. Schemat: **+5 V → opcjonalny wyłącznik → + silnika**, a **– silnika → GND zasilacza**. Zasilacz powinien zapewnić prąd rozruchowy silnika. Przewody zabezpiecz przed zwarciem. Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy odłączonym zasilaniu i zatrzymanym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
 
 **Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna; tarcze 7, 2A i 4 z najnowszego PDF-u wymagają końcowego sprawdzenia na jednym silniku. Jeśli 2A okaże się nieczytelna, wariant 2B znajduje się na drugiej stronie źródłowego PDF-u. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.
 
