@@ -332,18 +332,25 @@ def build_handouts(dst):
   else:
    doc2=fitz.open(path)
    if 'Wprowadzenie, mikroskop' in title:
-    # Earlier PDFs used an unavailable emoji glyph at the start of three headings.
-    # Replace only the missing glyph with a printable violet asterisk.
-    fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
-    for k in (1,2,3):
+    # Correct missing emoji glyphs in three legacy chapter headings.
+    titles={1:'DRUGA MISJA — TAJEMNICA MIKROSKOPU',
+            2:'TAJNA ŚCIĄGA PROFESORA VOLTA',
+            3:'DZIENNIK BADACZEK'}
+    fontfile='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+    for k,titletext in titles.items():
      pg=doc2[k]
-     pg.add_redact_annot(fitz.Rect(47,45,60,71),fill=(1,1,1))
+     pg.add_redact_annot(fitz.Rect(45,46,540,71),fill=(1,1,1))
      pg.apply_redactions(images=0,graphics=0,text=0)
-     pg.insert_font(fontname='DejaCustom',fontfile=fontfile)
-     pg.insert_text((49,65),'✦',fontname='DejaCustom',fontsize=18,color=(0.33,0.22,0.39),overlay=True)
+     pg.insert_font(fontname='DejaBoldFix',fontfile=fontfile)
+     pg.insert_text((48,65),titletext,fontname='DejaBoldFix',fontsize=17,color=(0.32,0.22,0.39),overlay=True)
   pages=indices if indices is not None else list(range(len(doc2)))
   for no in pages:result.insert_pdf(doc2,from_page=no,to_page=no)
   bookmarks.append([1,title,first]);doc2.close()
+ # Normalize pagination after merging legacy source PDFs.
+ for no,pg in enumerate(result,1):
+  pg.add_redact_annot(fitz.Rect(440,814,587,842),fill=(1,1,1))
+  pg.apply_redactions(images=0,graphics=0,text=0)
+  pg.insert_text((481,831),f'Strona {no} / {len(result)}',fontsize=8,color=(0.37,0.34,0.43))
  result.set_toc(bookmarks)
  result.set_metadata({'title':'Klątwa Siedmiu Światów — wszystkie materiały do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
