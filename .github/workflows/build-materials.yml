@@ -5,7 +5,7 @@ on:
     paths:
       - "tools/build_master.py"
       - ".github/workflows/build-materials.yml"
-      - "assets/zrodla/**"
+      - "assets/zrodla/**"\n      - "tarcze_7_2_4_test.pdf"
 permissions:
   contents: write
 jobs:
@@ -29,10 +29,10 @@ jobs:
           a=fitz.open('Instrukcja_organizatora.pdf')
           b=fitz.open('Materialy_do_druku.pdf')
           assert len(a)==10, f'Instrukcja: {len(a)} stron'
-          assert len(b)==27, f'Druk: {len(b)} stron'
+          assert len(b)==25, f'Druk: {len(b)} stron'
           assert 'WOLNOŚĆ' in ''.join(p.get_text() for p in b)
           assert '1987' in ''.join(p.get_text() for p in a)
-          print('Kontrola PDF: 10 + 27 stron, kod 1987, słowo WOLNOŚĆ.')
+          print('Kontrola PDF: 10 + 25 stron, kod 1987, słowo WOLNOŚĆ.')
           PY
       - name: Zapisz dwie gotowe publikacje w repozytorium
         run: |
