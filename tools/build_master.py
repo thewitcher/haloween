@@ -30,7 +30,6 @@ ASSETS={
 'symbols4':'04_Biuro_Mechanizm_Zatrzymanego_Czasu/Swiat_IV_Symbole_i_Dziennik_Zegarmistrza.pdf',
 'seal4':'04_Biuro_Mechanizm_Zatrzymanego_Czasu/Pieczec_IV_Mechanizm_Zatrzymanego_Czasu.pdf',
 'books5':'05_Pokoj_Emilki_Biblioteka_Niewidzialnego_Atramentu/Swiat_V_Kompletny_Pakiet_Do_Druku.pdf',
-'world6':'06_Pokoj_Zosi_Laboratorium_Ohma/Swiat_VI_Laboratorium_Volta_PELNY_KLIMATYCZNY_PAKIET.pdf',
 'final7':'07_Garderoba_Komnata_Cienia/Swiat_VII_FINAL_60_PUZZLI_KASPROWY.pdf',
 }
 LOCAL={
@@ -43,7 +42,6 @@ LOCAL={
 'symbols4':'Swiat_IV_Symbole_i_Dziennik_Zegarmistrza.pdf',
 'seal4':'Pieczec_IV_Mechanizm_Zatrzymanego_Czasu.pdf',
 'books5':'Swiat_V_Kompletny_Pakiet_Do_Druku.pdf',
-'world6':'Swiat_VI_Laboratorium_Volta_PELNY_KLIMATYCZNY_PAKIET.pdf',
 'final7':'Swiat_VII_FINAL_60_PUZZLI_KASPROWY.pdf',
 }
 
@@ -103,7 +101,7 @@ def quote(t):G.append(P(t,'quote'))
 def gap(n=7):G.append(Spacer(1,n))
 def breakp():G.append(PageBreak())
 G += [Spacer(1,72),P('KLĄTWA<br/>SIEDMIU ŚWIATÓW','splash'),P('JEDNA INSTRUKCJA DLA MISTRZA GRY','center'),Spacer(1,25),P('Siedem światów · dwoje dzieci · dwa tablety · 60 puzzli · jedna skrzynia','center'),Spacer(1,30),P('WERSJA OBOWIĄZUJĄCA — 28 PAŹDZIERNIKA 2026','center')]
-quote('TEN DOKUMENT ZAWIERA WSZYSTKIE ROZWIĄZANIA. Nie pokazuj go Zosi ani Emilce. Wszystkie karty, pieczęcie, rysunki i instrukcje do wycinania znajdują się w osobnym pliku „02_MATERIALY_DO_DRUKU.pdf”.')
+quote('TEN DOKUMENT ZAWIERA WSZYSTKIE ROZWIĄZANIA. Nie pokazuj go Zosi ani Emilce. Wszystkie karty, pieczęcie, rysunki i instrukcje do wycinania znajdują się w osobnym pliku „Materialy_do_druku.pdf”.')
 p('Ważne: źródłem prawdy są aktualne etapy aplikacji i ostatnie ustalenia. Starsze, rozproszone PDF-y mają nieaktualne fragmenty. W tej wersji zebrano przygotowanie wszystkich siedmiu światów w jednym miejscu.')
 breakp()
 h('00 · Przygotowania ogólne i uruchomienie')
@@ -296,25 +294,19 @@ def build_handouts(dst):
  sections=[]
  def add(title,filename,pages=None,kind='pdf'):
   sections.append((title,filename,pages,kind))
- add('Karta drukowania',guide_intro)
  add('Etykiety kopert',labels)
  add('I • Karty bestii',locate('monsters'),None,'image')
  add('I • Pieczęć',seals[1])
  add('II • Trzy lustrzane wiadomości',locate('world2'),[1])
  add('II • Pieczęć',seals[2])
  add('III • Instrukcja obrazkowa Enigmy',locate('enigma'),None)
- add('III • Etykiety i klawiatura',stations)
+ add('III • Etykiety stanowisk',stations)
  add('III • Pieczęć',seals[3])
  add('IV • Cztery tarcze zegarmistrza',locate('discs'),[0,1,2,3])
  add('IV • Cztery symbole',locate('symbols4'),[0])
- add('IV • Dziennik obserwacji',clocknote)
  add('IV • Pieczęć',seals[4])
- add('V • Instrukcja do symboli',booknote)
  add('V • Sześć symboli ksiąg',locate('books5'),[2])
- add('V • Dziennik bibliotekarki',booklog)
  add('V • Pieczęć',seals[5])
- add('VI • Wprowadzenie, mikroskop i tabela',locate('world6'),[0,1,2,3])
- add('VI • Karta kopert UV',uvnote)
  add('VI • Pieczęć',seals[6])
  add('VII • Plansza 60 puzzli',locate('final7'),[4])
  add('VII • List Morthara',locate('final7'),[1])
@@ -358,7 +350,7 @@ def build_handouts(dst):
  return sections
 
 if __name__=='__main__':
- a=OUT/'01_INSTRUKCJA_ORGANIZATORA.pdf'; b=OUT/'02_MATERIALY_DO_DRUKU.pdf'
+ a=OUT/'Instrukcja_organizatora.pdf'; b=OUT/'Materialy_do_druku.pdf'
  build_guide(a);sections=build_handouts(b)
  print(a,a.stat().st_size,'bytes',len(fitz.open(a)),'pages')
  print(b,b.stat().st_size,'bytes',len(fitz.open(b)),'pages')
