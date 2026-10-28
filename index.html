@@ -45,6 +45,29 @@ function world3Content(w,role){
 function toggleClockDemo(btn){const box=btn.closest('.clock-demo');const on=box.classList.toggle('sample');btn.textContent=on?'Pokaż płynny obrót':'Pokaż obraz widziany w błyskach';box.querySelector('.clock-caption').textContent=on?'Symulacja: widzimy tylko wybrane chwile obrotu, dlatego cyfra wygląda na nieruchomą. Koło w rzeczywistości nadal się obraca.':'Widzimy ruch bez przerw — cyfra szybko wiruje.'}
 function solveClock(){action('/api/world4/answer',{code:document.querySelector('#clock-code').value})}
 function sealClock(){action('/api/world4/envelope',{code:document.querySelector('#clock-seal').value})}
+
+const B5=[
+['ksiezyc','KSIĘŻYC','Poszukaj między książkami na regale.','Cztery pory roku po sześć tajemnych godzin. Ile godzin?'],
+['kruk','KRUK','Czarny ptak skrył się w wysuwanym schowku biurka.','Sześć gałęzi, na każdej sześć kruków. Ile kruków?'],
+['klucz','KLUCZ','Szukaj za oknem, które pokazuje obrazy, lecz nie wpuszcza wiatru.','A=1, B=2, C=3. Dodaj wartości C, F i I.'],
+['pajak','PAJĄK','Tkacz sieci skrył się pod urządzeniem ogrzewającym pokój.','Pięć pająków po osiem nóg. Jeden traci dwie, obok stoi kot. Ile nóg razem?'],
+['waz','WĄŻ','Szukaj w kufrze pełnym kolorowych cegiełek.','Dodaj do siebie trzy dziewiątki.'],
+['swieca','ŚWIECA','Księga płomienia stoi na regale, lecz nie obok księgi Księżyca.','Dodaj 1, 2, 3, 4 i 5.']
+];
+function world5Content(w,role){
+let h='<h2>📚 ŚWIAT V — BIBLIOTEKA ZAPOMNIANYCH IMION</h2><p>Pokój Emilki</p><div class="paper">Bezimienna Bibliotekarka straciła swoje imię. Sześć ksiąg skrywa litery niewidoczne w zwykłym świetle. Morthar dopisał fałszywe znaki. Jedna Strażniczka zna kryjówki, druga — właściwe strony.</div>';
+if(w.stage==='search'){
+h+='<h3>'+(role==='1'?'Strażniczka I: odnajdź księgi':'Strażniczka II: rozwiąż rebusy')+'</h3>';
+for(const i of [4,1,5,2,0,3]){const b=B5[i],found=w.found.includes(b[0]);h+='<div class="paper"><b>'+b[1]+'</b><p>'+(role==='1'?b[2]:b[3])+'</p>';
+if(role==='1')h+=found?'✔ Odnaleziona':'<button onclick="action(\'/api/world5/find\',{book:\''+b[0]+'\'})">ZNALAZŁAM KSIĘGĘ</button>';
+else h+=w.pages[b[0]]?'✔ Strona odgadnięta':found?'<input id="pg5'+i+'" inputmode="numeric" placeholder="Numer strony"><button onclick="action(\'/api/world5/page\',{book:\''+b[0]+'\',page:document.getElementById(\'pg5'+i+'\').value})">SPRAWDŹ STRONĘ</button>':'Najpierw partnerka musi odnaleźć tę księgę.';
+h+='</div>'}return h;}
+if(w.stage==='uv'){h+='<h3>🔦 Gdzie ukryto niewidzialne światło?</h3>';h+=role==='1'?'<div class="paper">Co zostawia ślady na papierze i trzeba to ostrzyć? W czym odpoczywają ołówki i długopisy? Co wysuwa się z biurka, choć nie ma nóg?</div>':'<div class="paper">Połącz odpowiedzi partnerki. Poszukajcie domku dla przyborów do pisania w wysuwanym schowku biurka. Tam czeka światło, które odkrywa niewidzialne znaki.</div>';return h+(w.uv[role]?'✔ Czekam na partnerkę.':'<button onclick="action(\'/api/world5/uv\',{})">ODNALAZŁYŚMY ŚWIATŁO UV</button>');}
+if(w.stage==='solve'){h+='<h3>✨ Odczytajcie prawdziwe imię</h3><p>Sprawdźcie tylko strony wyznaczone rebusami. Pozostałe litery to pułapki!</p>';h+=role==='1'?'<div class="paper">Pochód otwiera ten, kto świeci światłem odbitym. Kruk idzie bezpośrednio za nim. Klucz stoi bezpośrednio przed Pająkiem.</div>':'<div class="paper">Świeca zamyka pochód. Wąż stoi po Pająku, lecz przed Świecą.</div>';return h+(w.answer[role]?'✔ Czekam na partnerkę.':'<input id="name5" placeholder="Prawdziwe imię"><button onclick="action(\'/api/world5/answer\',{code:document.getElementById(\'name5\').value})">WYPOWIEDZ IMIĘ</button>');}
+h+='<h3>🕯️ Imię zostało przywrócone!</h3><div class="paper">Morwena odzyskała wspomnienia. „Szukajcie wyspy, której nie otacza morze. Jej mieszkańcy strzegą prawa, choć nie oddychają. Wyspę zbudowano z drobnych cegieł.”</div>';
+return h+(w.stage==='finished'?'✔ Piąta Pieczęć zdobyta.':w.envelope[role]?'✔ Czekam na partnerkę.':'<input id="seal5" placeholder="Kod z Pieczęci V"><button onclick="action(\'/api/world5/envelope\',{code:document.getElementById(\'seal5\').value})">POTWIERDŹ PIECZĘĆ V</button>');
+}
+
 function world4Content(w,role){
  let h='<h2 class="center">🕰️ ŚWIAT IV — MECHANIZM ZATRZYMANEGO CZASU</h2><p class="center">📍 GABINET</p>';
  h+='<div class="paper">„Zegar nie tyka. Cztery koła obracają się wbrew prawom czasu. Aureliusz, zegarmistrz Morthara, rozbił godzinę na cztery pieczęcie. Jedna Strażniczka musi ujarzmić światło, druga — przywrócić porządek wspomnieniom. Dopiero wspólne słowo liczb odsłoni miejsce, w którym ukryto czwartą Pieczęć.”</div>';
