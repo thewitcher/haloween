@@ -16,7 +16,7 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 
 ## Dwa dokumenty w katalogu głównym — po regeneracji
 
-**Uwaga (Świat IV, 29.10.2026):** aplikacja, skecz i generator zostały zaktualizowane, ale GitHub Actions nie przydzielił runnera do automatycznej regeneracji PDF-ów. **Zapisane w repozytorium pliki `Instrukcja_organizatora.pdf` i `Materialy_do_druku.pdf` mogą nadal zawierać stary układ czterech silników i tarcz.** Przed grą uruchom lokalnie generator poniżej i zapisz wygenerowane PDF-y do repozytorium.
+**Uwaga (Świat IV, 29.10.2026):** aplikacja i generator zostały zaktualizowane, ale GitHub Actions nie przydzielił runnera do automatycznej regeneracji PDF-ów. **Zapisane w repozytorium pliki `Instrukcja_organizatora.pdf` i `Materialy_do_druku.pdf` mogą nadal zawierać stary układ czterech silników i tarcz.** Przed grą uruchom lokalnie generator poniżej i zapisz wygenerowane PDF-y do repozytorium.
 
 Docelowo w katalogu głównym znajdują się **dwa dokumenty do używania przy grze**:
 
@@ -59,13 +59,14 @@ GitHub Actions może automatycznie regenerować dokumenty, ale jeśli workflow n
 - `Instrukcja_organizatora.pdf`, `Materialy_do_druku.pdf` — dwa zbiorcze dokumenty do gry (w materiałach: cztery tarcze 10 cm na dwóch stronach A4).
 - `tarcze_7_2_4_test.pdf` — źródłowy zestaw próbny, w tym rezerwowa dwójka B; nie drukuj go, jeśli korzystasz z pakietu zbiorczego.
 - `index.html`, `server.py`, `reset.py` — aplikacja i obsługa stanu gry.
-- `Enigma_Doktora_Morsea.ino`, `Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino` — programy mikrokontrolerów (Świat IV: jeden silnik na D1/ENA).
+- `Enigma_Doktora_Morsea.ino` — program Arduino UNO używanego w Świecie III.
+- `Mechanizm_Zatrzymanego_Czasu_NodeMCU.ino` — zachowany archiwalny skecz, **niepotrzebny w aktualnej wersji Świata IV**.
 - `tools/build_master.py` — generator obu dokumentów.
 - `assets/zrodla/` — źródłowe grafiki, wyłącznie techniczne; **nie drukować osobno**.
 
 ## Świat IV — nowa obsługa tarcz
 
-W gabinecie jest **jeden silnik**. Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy wyłączonym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
+W gabinecie jest **jeden silnik DC 3–6 V zasilany bezpośrednio z 5 V** — bez NodeMCU i L298N. Można dodać prosty wyłącznik o parametrach odpowiednich do prądu silnika. Schemat: **+5 V → opcjonalny wyłącznik → + silnika**, a **– silnika → GND zasilacza**. Zasilacz powinien zapewnić prąd rozruchowy silnika. Przewody zabezpiecz przed zwarciem.  Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy odłączonym zasilaniu i zatrzymanym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
 
 **Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna; tarcze 7, 2A i 4 z najnowszego PDF-u wymagają końcowego sprawdzenia na jednym silniku. Jeśli 2A okaże się nieczytelna, wariant 2B znajduje się na drugiej stronie źródłowego PDF-u. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.
 
