@@ -270,7 +270,7 @@ def build_world4_symbols():
  page.insert_text((54,681),'JAK PRZYGOTOWAĆ TARCZE?',fontname='dvbold',fontsize=11,color=(.25,.18,.32))
  for y,line in [
   (705,'1. Wytnij cztery symbole i przyklej każdy na ODWROCIE właściwej tarczy.'),
-  (724,'2. Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 (tylko dla dorosłego).'),
+  (724,'2. Wytnij same symbole z nazwami; nie naklejaj całych dużych ramek.'),
   (743,'3. Przed zamontowaniem sprawdź symbol; po odczycie zapisz symbol i cyfrę.'),
   (762,'4. Wymieniaj tarcze wyłącznie po wyłączeniu i zatrzymaniu silnika.'),
   (784,'Symbole nie określają kolejności kodu — rozstrzyga zagadka na tablecie.')
