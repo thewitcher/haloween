@@ -173,6 +173,78 @@ function render(d){
  app.innerHTML=head+content;
  }
 }
+
+const mortharThreats=[
+'„Słyszę wasze kroki. Każdy z nich przybliża was do mojego świata… ale czy potraficie z niego wrócić?”',
+'„Ciii… Czy ten dźwięk dobiega zza drzwi, czy może ktoś właśnie stoi za wami?”',
+'„Nie wszystkie cienie należą do przedmiotów, które je rzucają. Zapamiętajcie to.”',
+'„Tik… tak… tik… tak… Nie musicie się spieszyć. Ja mam całą wieczność.”',
+'„Nawet najjaśniejsze światło nie rozproszy każdego mroku. Spójrzcie uważnie.”',
+'„Śmiałe Strażniczki! Czy myślicie, że nie widzę, jak szepczecie sobie odpowiedzi?”',
+'„Podobno w tym domu są drzwi, których nigdy nie otwierano. Zastanawiam się dlaczego…”',
+'„Właśnie usłyszałem śmiech. Czy to był wasz głos… czy mój?”',
+'„Za każdym razem, gdy zdobywacie pieczęć, cień w Komnacie Cienia staje się dłuższy.”',
+'„Ktoś zgasił jedną z gwiazd. Która z was zauważyła to pierwsza?”',
+'„Siedem Światów. Jeden zegar. A wskazówki nadal są po mojej stronie!”',
+'„Wasza odwaga jest imponująca. Szkoda, że odwaga nie potrafi zatrzymać czasu.”',
+'„Słyszycie? Dom oddycha. Nie lubi, gdy odkrywacie jego sekrety.”',
+'„Jeśli przez chwilę zrobi się zupełnie cicho, nie oznacza to, że zostałyście same…”',
+'„Myślicie, że już mnie przechytrzyłyście? Dopiero zaczynam się dobrze bawić.”',
+'„Kiedyś ten dom należał do czasu. Teraz każda sekunda służy mnie!”',
+'„Powiedzcie mi, Strażniczki… jak smakuje zwycięstwo, którego jeszcze nie zdobyłyście?”',
+'„Morwena myśli, że może wam pomóc. Zapomniała, kto pierwszy wymazał jej imię…”',
+'„Zegar ma dwa oblicza. Jedno pokazuje czas. Drugie — to, co czai się za nim.”',
+'„Jeszcze nie koniec. Wasza opowieść wciąż ma kilka ciemnych stron.”'
+];
+let mortharPreviousFocus=null;
+function closeMortharMessage(){
+ const overlay=document.getElementById('morthar-overlay');
+ if(!overlay)return;
+ overlay.remove();
+ if(mortharPreviousFocus&&document.contains(mortharPreviousFocus))mortharPreviousFocus.focus();
+ mortharPreviousFocus=null;
+}
+function showMortharMessage(message){
+ if(document.getElementById('morthar-overlay'))return;
+ mortharPreviousFocus=document.activeElement;
+ const overlay=document.createElement('div');
+ overlay.id='morthar-overlay';
+ overlay.className='morthar-overlay';
+ overlay.setAttribute('role','presentation');
+ const panel=document.createElement('section');
+ panel.className='morthar-dialog';
+ panel.setAttribute('role','dialog');
+ panel.setAttribute('aria-modal','true');
+ panel.setAttribute('aria-labelledby','morthar-title');
+ const eye=document.createElement('div');
+ eye.className='morthar-eye';eye.textContent='👁️';
+ const heading=document.createElement('h2');
+ heading.id='morthar-title';heading.textContent='WIADOMOŚĆ OD MORTHARA';
+ const whisper=document.createElement('div');
+ whisper.className='morthar-whisper';whisper.textContent='✦ PRZECHWYCONO MROCZNY SZEPT ✦';
+ const speech=document.createElement('p');
+ speech.className='morthar-speech';speech.textContent=message;
+ const button=document.createElement('button');
+ button.type='button';button.textContent='NIE BOIMY SIĘ! WRACAMY DO GRY';
+ button.addEventListener('click',closeMortharMessage);
+ panel.append(eye,heading,whisper,speech,button);overlay.append(panel);
+ document.body.append(overlay);button.focus();
+}
+function maybeMortharMessage(d){
+ if(d.phase!=='playing'||!d.run_id||d.world7?.stage==='victory')return;
+ const slot=Math.min(12,Math.floor((7200-d.remaining)/600));
+ if(slot<1)return;
+ const key='sw_morthar_seen_'+d.run_id+'_'+role;
+ const lastSeen=Number(localStorage.getItem(key)||'0');
+ if(slot<=lastSeen)return;
+ localStorage.setItem(key,String(slot));
+ const lastIndexKey='sw_morthar_index_'+d.run_id+'_'+role;
+ const lastIndex=Number(localStorage.getItem(lastIndexKey)||'-1');
+ let choice=Math.floor(Math.random()*mortharThreats.length);
+ if(choice===lastIndex)choice=(choice+1)%mortharThreats.length;
+ localStorage.setItem(lastIndexKey,String(choice));
+ showMortharMessage(mortharThreats[choice]);
+}
 async function refresh(){if(!role){render({});return}try{const r=await fetch('/api/state?role='+role,{cache:'no-store'}),d=await r.json();if(!r.ok)throw Error(d.error);const key=[d.phase,d.page_index,d.reader,d.oaths['1'],d.oaths['2'],d.players['1']?.name,d.players['2']?.name,d.world1.stage,d.world1.found.join(','),d.world1.number_count,d.world1.eliminated?.join(','),d.world1.answers['1'],d.world1.answers['2'],d.world1.envelope['1'],d.world1.envelope['2'],d.world2.stage,d.world2.found.join(','),d.world2.answers['1'],d.world2.answers['2'],d.world2.envelope['1'],d.world2.envelope['2'],d.world3.stage,d.world4.stage,d.world4.answers['1'],d.world4.answers['2'],d.world4.envelope['1'],d.world4.envelope['2'],JSON.stringify(d.world5),JSON.stringify(d.world6),JSON.stringify(d.world7),d.world3.answers['1'],d.world3.answers['2'],d.world3.envelope['1'],d.world3.envelope['2']].join('|');if(key!==lastKey){lastKey=key;render(d)}else if(d.phase==='playing'){const t=document.querySelector('.timer');if(t)t.textContent=format(d.remaining)}}catch(e){notice.textContent='Brak połączenia z serwerem: '+e.message}}
 refresh();setInterval(refresh,1000);
 </script></body></html>
