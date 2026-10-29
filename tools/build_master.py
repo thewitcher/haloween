@@ -194,7 +194,7 @@ class PrintSeal(Flowable):
   c.setFont('DV',9);c.drawCentredString(240,58,'ZACHOWAJ DO KOŃCA GRY');c.restoreState()
 
 
-# Świat IV: tarcze 7, 4 i 2A są kopiowane bez skalowania z nowego
+# Świat IV: tarcze 7, 4 i 2B są kopiowane bez skalowania z nowego
 # źródła w katalogu głównym. Dziewiątka jest odtworzona z wektorowych
 # współrzędnych sprawdzonej tarczy 6-sektorowej (bez starego wzoru 12×9).
 def build_world4_discs():
@@ -214,7 +214,7 @@ def build_world4_discs():
   label(page,44,61,'Jedna tarcza na raz • wytnij po obwodzie • wydruk 100%',9)
   for row in range(2):
    if page_number==1 and row==1:continue
-   source_row=row if page_number==0 else 0
+   source_row=row if page_number==0 else 1
    source_y=(upper,lower)[source_row]
    target_y=(upper,lower)[row]
    clip=fitz.Rect(cx-radius-2,source_y-radius-2,cx+radius+2,source_y+radius+2)
@@ -239,7 +239,7 @@ def build_world4_discs():
   labels=(
    [('7','KSIĘŻYC','2 fragmenty co 180°'),('4','KLEPSYDRA','3 fragmenty co 120°')]
    if page_number==0 else
-   [('2 (wariant A)','KRUK','5 fragmentów co 72°'),('9','KLUCZ','6 fragmentów co 60°')]
+   [('2 (wariant B)','KRUK','5 fragmentów co 72°'),('9','KLUCZ','6 fragmentów co 60°')]
   )
   for row,(digit,symbol,detail) in enumerate(labels):
    y=(upper,lower)[row]
@@ -428,7 +428,7 @@ def build_handouts(dst):
  add('III • Instrukcja obrazkowa Enigmy',locate('enigma'),None)
  add('III • Etykiety stanowisk',stations)
  add('III • Pieczęć',seals[3])
- add('IV • Cztery wymienne tarcze (7, 4, 2, 9)',world4_discs)
+ add('IV • Cztery wymienne tarcze (7, 4, 2B, 9)',world4_discs)
  add('IV • Symbole do przyklejenia na odwrotach',world4_symbols)
  add('IV • Pieczęć',seals[4])
  add('V • Sześć symboli ksiąg',locate('books5'),[2])
