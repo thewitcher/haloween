@@ -19,7 +19,7 @@ Adres laptopa: `hostname -I`. Na obu tabletach, połączonych z tym samym Wi-Fi,
 W katalogu głównym używamy **wyłącznie dwóch dokumentów**. Przy kolejnych poprawkach zachowujemy ich nazwy i zastępujemy zawartość:
 
 - **`Instrukcja_organizatora.pdf`** — 10 stron; przygotowanie siedmiu światów, rozwiązania i bezpieczeństwo. **Tylko dla dorosłego.**
-- **`Materialy_do_druku.pdf`** — 25 stron; karty, pieczęcie, instrukcja Enigmy, cztery wymienne tarcze 10 cm na dwóch kartkach A4, symbole na odwroty, list i dyplomy.
+- **`Materialy_do_druku.pdf`** — 27 stron; 6 etykiet kopert z nazwami światów, 7 tabliczek na drzwi, karty, pieczęcie, instrukcja Enigmy, cztery wymienne tarcze 10 cm na dwóch kartkach A4, symbole na odwroty, list i dyplomy.
 
 **Ważne:** jeśli PDF-y w repozytorium mają jeszcze starszą treść, trzeba je jednokrotnie odświeżyć lokalnie. Zmiana generatora nie zmienia automatycznie gotowych plików PDF. Nie ma już workflow GitHub Actions.
 
@@ -41,7 +41,7 @@ Nie trzeba niczego klikać w GitHub Actions. Nie tworzymy dodatkowych wersji typ
 
 Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2A i 4 pochodzą z nowszego zestawu próbnego.
 
-Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Do finału używamy jednego **prawdziwego zestawu 60 puzzli**; nie drukujemy papierowych puzzli. Układamy je, nanosimy wspólną wskazówkę na odwrocie tuszem UV, a następnie dzielimy na sześć kopert po dziesięć elementów.
+Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Strona 1 zawiera etykiety sześciu dużych kopert, a strony 2–3 tabliczki na drzwi siedmiu światów. Na etykietach dla dzieci są nazwy magicznych światów, nie nazwy pomieszczeń. Rozmieszczenie: I – salon, II – sypialnia, III – kuchnia, IV – gabinet, V – pokój Emilki, VI – pokój Zosi, VII – garderoba. Nie podpisuj widzialnym tuszem sześciu małych kopert z rezystorami. Do finału używamy jednego **prawdziwego zestawu 60 puzzli**; nie drukujemy papierowych puzzli. Układamy je, nanosimy wspólną wskazówkę na odwrocie tuszem UV, a następnie dzielimy na sześć kopert po dziesięć elementów.
 
 ## Układ repozytorium
 
