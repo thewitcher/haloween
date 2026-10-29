@@ -306,6 +306,33 @@ def cutout_table(rows, heights):
  ]))
  return t
 
+def mirror_world4_discs_in_print_pack(document):
+ """Odbij tylko wzory czterech tarcz; podpisy i symbole pozostają czytelne."""
+ from io import BytesIO
+ from PIL import Image, ImageOps
+ pages=[i for i,p in enumerate(document) if 'WYMIENNE TARCZE ZEGARMISTRZA' in p.get_text()]
+ if len(pages)!=2:
+  raise ValueError(f'Oczekiwano 2 stron z tarczami Świata IV, znaleziono {len(pages)}')
+ cx=184.252
+ radius=50*mm
+ for idx in pages:
+  pg=document[idx]
+  for cy in (243.7795,583.937):
+   region=fitz.Rect(cx-radius,cy-radius,cx+radius,cy+radius)
+   pix=pg.get_pixmap(matrix=fitz.Matrix(4,4),clip=region,
+                     alpha=False,colorspace=fitz.csRGB)
+   img=Image.frombytes('RGB',(pix.width,pix.height),pix.samples)
+   img=ImageOps.mirror(img)
+   output=BytesIO()
+   img.save(output,format='PNG',optimize=True)
+   pg.draw_rect(region,color=None,fill=(1,1,1),overlay=True)
+   pg.insert_image(region,stream=output.getvalue(),overlay=True,keep_proportion=False)
+   # Gruba, czytelna linia cięcia; średnica tarczy pozostaje 100 mm.
+   pg.draw_circle((cx,cy),radius-1.1,color=(0,0,0),width=2.2,overlay=True)
+  pg.insert_text((44,82),
+     'WZORY ODBITE LUSTRZANIE — dla ustalonego kierunku obrotów',
+     fontsize=8.2,color=(.15,.13,.2),overlay=True)
+
 def build_handouts(dst):
  def textpage(filename,parts,tag='DO WYDRUKU'):
   arr=[]
@@ -460,6 +487,7 @@ def build_handouts(dst):
   pg.apply_redactions(images=0,graphics=0,text=0)
   pg.insert_text((481,831),f'Strona {no} / {len(result)}',fontsize=8,color=(0.37,0.34,0.43))
  result.set_toc(bookmarks)
+ mirror_world4_discs_in_print_pack(result)
  result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
