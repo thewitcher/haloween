@@ -39,7 +39,7 @@ Nie trzeba niczego klikać w GitHub Actions. Nie tworzymy dodatkowych wersji typ
 
 ### Materiały źródłowe a druk
 
-Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2B i 4 pochodzą z zestawu próbnego. W teście 2A była widoczna jako 5, a 2B jako prawidłowa 2.
+Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2B i 4 pochodzą z zestawu próbnego. W teście 2A była widoczna jako 5, a 2B jako prawidłowa 2. **Wydrukowane wzory wszystkich czterech tarcz (7, 2B, 9, 4) są teraz odbite lustrzanie dla ustalonego kierunku obrotów silnika.** Podpisy, etykiety i symbole na odwrocie pozostają normalne. Po zmianie wzorów wymagany jest ponowny test stroboskopowy każdej tarczy.
 
 Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Strona 1 zawiera etykiety sześciu dużych kopert, a strony 2–3 tabliczki na drzwi siedmiu światów. Na etykietach dla dzieci są nazwy magicznych światów, nie nazwy pomieszczeń. Rozmieszczenie: I – salon, II – sypialnia, III – kuchnia, IV – gabinet, V – pokój Emilki, VI – pokój Zosi, VII – garderoba. Nie podpisuj widzialnym tuszem sześciu małych kopert z rezystorami. Do finału używamy jednego **prawdziwego zestawu 60 puzzli**; nie drukujemy papierowych puzzli. Układamy je, nanosimy wspólną wskazówkę na odwrocie tuszem UV, a następnie dzielimy na sześć kopert po dziesięć elementów.
 
