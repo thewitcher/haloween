@@ -21,7 +21,7 @@ import fitz
 
 expected = {
     "Instrukcja_organizatora.pdf": 10,
-    "Materialy_do_druku.pdf": 25,
+    "Materialy_do_druku.pdf": 27,
 }
 for filename, pages in expected.items():
     path = Path(filename)
