@@ -12,7 +12,7 @@ if [[ ! -d .venv ]]; then
   python3 -m venv .venv
 fi
 source .venv/bin/activate
-python -m pip install --disable-pip-version-check --quiet reportlab pymupdf
+python -m pip install --disable-pip-version-check --quiet reportlab pymupdf pillow
 python tools/build_master.py
 
 python - <<'PY'
@@ -35,6 +35,7 @@ with fitz.open("Instrukcja_organizatora.pdf") as doc:
 with fitz.open("Materialy_do_druku.pdf") as doc:
     text = "\n".join(page.get_text() for page in doc)
     assert "WYMIENNE TARCZE" in text and "WOLNOŚĆ" in text, "Brak tarcz lub zakończenia"
+    assert "WZORY ODBITE LUSTRZANIE" in text, "Brak lustrzanego odbicia tarcz"
 print("Oba PDF-y zostały odświeżone pod stałymi nazwami.")
 PY
 
