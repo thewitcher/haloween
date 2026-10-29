@@ -220,6 +220,9 @@ def build_world4_discs():
    clip=fitz.Rect(cx-radius-2,source_y-radius-2,cx+radius+2,source_y+radius+2)
    target=fitz.Rect(cx-radius-2,target_y-radius-2,cx+radius+2,target_y+radius+2)
    page.show_pdf_page(target,source,page_number,clip=clip)
+  # Wyraźna linia cięcia o średnicy 10 cm dla każdej tarczy.
+  for center_y in (upper,lower):
+   page.draw_circle((cx,center_y),radius-1.1,color=(0,0,0),width=2.2)
   if page_number==1:
    # Cyfra 9: dokładne końce sześciu kresek działającej tarczy,
    # przeliczone z pierwszego na dolny środek strony.
@@ -294,8 +297,8 @@ WORLD_TITLES = [
 def cutout_table(rows, heights):
  t=Table(rows,colWidths=[250,250],rowHeights=heights,hAlign='CENTER')
  t.setStyle(TableStyle([
-  ('GRID',(0,0),(-1,-1),1.5,GOLD),
-  ('BOX',(0,0),(-1,-1),2,PUR),
+  ('GRID',(0,0),(-1,-1),3.2,PUR),
+  ('BOX',(0,0),(-1,-1),3.2,PUR),
   ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fcf8fd')),
   ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
   ('LEFTPADDING',(0,0),(-1,-1),12),
