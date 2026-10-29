@@ -39,7 +39,7 @@ Nie trzeba niczego klikać w GitHub Actions. Nie tworzymy dodatkowych wersji typ
 
 ### Materiały źródłowe a druk
 
-Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2A i 4 pochodzą z nowszego zestawu próbnego.
+Generator `tools/build_master.py` korzysta z grafik w `assets/zrodla/` oraz z pliku `tarcze_7_2_4_test.pdf` w katalogu głównym. Są to **źródła techniczne**, nie osobne obowiązujące materiały do druku. Tarcza 9 jest odtworzona z sześciu segmentów, a 7, 2B i 4 pochodzą z zestawu próbnego. W teście 2A była widoczna jako 5, a 2B jako prawidłowa 2.
 
 Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Strona 1 zawiera etykiety sześciu dużych kopert, a strony 2–3 tabliczki na drzwi siedmiu światów. Na etykietach dla dzieci są nazwy magicznych światów, nie nazwy pomieszczeń. Rozmieszczenie: I – salon, II – sypialnia, III – kuchnia, IV – gabinet, V – pokój Emilki, VI – pokój Zosi, VII – garderoba. Nie podpisuj widzialnym tuszem sześciu małych kopert z rezystorami. Do finału używamy jednego **prawdziwego zestawu 60 puzzli**; nie drukujemy papierowych puzzli. Układamy je, nanosimy wspólną wskazówkę na odwrocie tuszem UV, a następnie dzielimy na sześć kopert po dziesięć elementów.
 
@@ -57,7 +57,7 @@ Drukuj `Materialy_do_druku.pdf` na A4 w **skali 100%**. Strona 1 zawiera etykiet
 
 W gabinecie jest **jeden silnik DC 3–6 V zasilany bezpośrednio z 5 V** — bez NodeMCU i L298N. Można dodać prosty wyłącznik o parametrach odpowiednich do prądu silnika. Schemat: **+5 V → opcjonalny wyłącznik → + silnika**, a **– silnika → GND zasilacza**. Zasilacz powinien zapewnić prąd rozruchowy silnika. Przewody zabezpiecz przed zwarciem. Dzieci wybierają jedną z czterech tarcz i sprawdzają **symbol na odwrocie** (Księżyc = 7, Kruk = 2, Klucz = 9, Klepsydra = 4 — przyporządkowanie tylko dla organizatora). Dorosły przy odłączonym zasilaniu i zatrzymanym silniku mocuje tarczę taśmą i zamyka osłonę. Po uruchomieniu odczytują cyfrę przy pomocy stroboskopu i zapisują ją obok symbolu. Przed wymianą tarczy dorosły wyłącza zasilanie i czeka na całkowite zatrzymanie. Cztery odczyty przekazują Strażniczce II, która układa symbole według zagadki; **kolejność wymiany tarcz nie jest kolejnością kodu**.
 
-**Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna; tarcze 7, 2A i 4 z najnowszego PDF-u wymagają końcowego sprawdzenia na jednym silniku. Jeśli 2A okaże się nieczytelna, wariant 2B znajduje się na drugiej stronie źródłowego PDF-u. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.
+**Stan testów:** tarcza 9 (sześć fragmentów co 60°) była czytelna. Podczas testu tarcza 2A dała cyfrę 5, a tarcza 2B prawidłową cyfrę 2; dlatego w aktualnym pakiecie stosujemy 2B. Widziane były również cyfry 4 i 7. Przed grą przetestuj każdą tarczę; nie zakładaj jednej uniwersalnej częstotliwości błysków.
 
 ## Przebieg siedmiu światów
 
