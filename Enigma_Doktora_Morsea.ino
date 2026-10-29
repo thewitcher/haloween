@@ -23,9 +23,9 @@ const char* morse(char c){
  switch(c){case 'A':return ".-";case 'B':return "-...";case 'C':return "-.-.";case 'D':return "-..";case 'E':return ".";case 'F':return "..-.";case 'G':return "--.";case 'H':return "....";case 'I':return "..";case 'J':return ".---";case 'K':return "-.-";case 'L':return ".-..";case 'M':return "--";case 'N':return "-.";case 'O':return "---";case 'P':return ".--.";case 'Q':return "--.-";case 'R':return ".-.";case 'S':return "...";case 'T':return "-";case 'U':return "..-";case 'V':return "...-";case 'W':return ".--";case 'X':return "-..-";case 'Y':return "-.--";case 'Z':return "--..";default:return "";}
 }
 // Jednostka Morse'a: kropka = 1, kreska = 3.
-// Odstęp między elementami litery = 1, między literami = 3 jednostki.
-// Odstęp między słowami = 5000 ms (liczony od zgaśnięcia ostatniego błysku).
-const unsigned long UNIT=260, WORD_GAP=5000, START_GAP=5000;
+// Odstęp między elementami litery = 1 UNIT.
+// Odstęp między literami / słowami liczony od zgaśnięcia ostatniego błysku.
+const unsigned long UNIT=700, LETTER_GAP=5000, WORD_GAP=15000, START_GAP=5000;
 enum TxState { BLUE_START, GREEN_ON, GREEN_OFF };
 TxState txState=BLUE_START;
 byte wordIndex=0, charIndex=0, symbolIndex=0;
@@ -80,7 +80,7 @@ void stepMorse(unsigned long now){
   symbolIndex=0;
   charIndex++;
   if(words[wordIndex][charIndex]){
-   deadline=now+3*UNIT; // przerwa między literami
+   deadline=now+LETTER_GAP; // przerwa między literami
   }else{
    wordIndex++;
    charIndex=0;
@@ -97,6 +97,7 @@ void loop(){
   if(key>='0'&&key<='9'&&entry.length()<5)entry+=key;
   else if(key=='<'&&entry.length())entry.remove(entry.length()-1);
   else if(key=='C')entry="";
+  else if(key=='Z')startCycle(now); // S16 — restart Morse od początku
   else if(key=='='){
    if(entry=="94287"){solved=true;digitalWrite(BLUE_PIN,LOW);digitalWrite(GREEN_PIN,LOW);showText("BURZA");}
    else{entry="";showText("BLAD");temporaryUntil=now+1500;}
