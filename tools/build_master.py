@@ -280,6 +280,29 @@ def build_world4_symbols():
  output.close()
  return path
 
+# Jedna lista nazw na tabliczki drzwi i etykiety kopert.
+WORLD_TITLES = [
+ ('I', 'KRYPTA SZEŚCIU BESTII'),
+ ('II', 'GALERIA LUSTRZANYCH SZEPTÓW'),
+ ('III', 'LABORATORIUM DOKTORA MORSE’A'),
+ ('IV', 'MECHANIZM ZATRZYMANEGO CZASU'),
+ ('V', 'BIBLIOTEKA ZAPOMNIANYCH IMION'),
+ ('VI', 'LABORATORIUM PROFESORA VOLTA'),
+ ('VII', 'KOMNATA CIENIA'),
+]
+
+def cutout_table(rows, heights):
+ t=Table(rows,colWidths=[250,250],rowHeights=heights,hAlign='CENTER')
+ t.setStyle(TableStyle([
+  ('GRID',(0,0),(-1,-1),1.5,GOLD),
+  ('BOX',(0,0),(-1,-1),2,PUR),
+  ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#fcf8fd')),
+  ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+  ('LEFTPADDING',(0,0),(-1,-1),12),
+  ('RIGHTPADDING',(0,0),(-1,-1),12),
+ ]))
+ return t
+
 def build_handouts(dst):
  def textpage(filename,parts,tag='DO WYDRUKU'):
   arr=[]
@@ -295,15 +318,40 @@ def build_handouts(dst):
    elif typ=='diagram':arr.append(ResistDiagram())
    elif typ=='table':arr.append(t)
    elif typ=='spacer':arr.append(Spacer(1,int(t)))
+   elif typ=='pagebreak':arr.append(PageBreak())
   dest=OUT/('_'+filename+'.pdf')
   SimpleDocTemplate(str(dest),pagesize=A4,rightMargin=MARGIN,leftMargin=MARGIN,topMargin=47,bottomMargin=44).build(arr,onFirstPage=lambda c,d:page_frame(c,d,tag),onLaterPages=lambda c,d:page_frame(c,d,tag))
   return dest
 
- labelparts=[('title','ETYKIETY KOPERT I–VI'),('p','Wytnij i przyklej na sześciu kopertach z pieczęciami. Uwaga: sześciu małych kopert z rezystorami NIE podpisuj widzialnym tuszem; oznacz je ręcznie UV.')]
- for row in [('I — SALON','II — SYPIALNIA'),('III — KUCHNIA','IV — GABINET'),('V — POKÓJ EMILKI','VI — POKÓJ ZOSI')]:
-  labelparts.extend([('table',tbl([[f'✦ KOPERTA {row[0]}',f'✦ KOPERTA {row[1]}']], [252,252],False)),('spacer','15')])
- labelparts += [('h2','WAŻNE: zawartość każdej koperty'),('p','Dokładnie jedna pieczęć świata i 10 losowych kawałków finałowej układanki. Nie kładź kartki z rozwiązaniem na zewnątrz koperty.')]
- labels=textpage('labels',labelparts)
+ # Etykiety kopert: nazwy światów, bez nazw pomieszczeń.
+ envelope_style=ParagraphStyle('EnvelopeLabel',fontName='DV-B',fontSize=12.5,
+     leading=20,alignment=TA_CENTER,textColor=PUR)
+ door_style=ParagraphStyle('DoorLabel',fontName='DVS-B',fontSize=15,
+     leading=24,alignment=TA_CENTER,textColor=PUR)
+ def envelope_cell(roman,title):
+  return Paragraph('KOPERTA '+roman+'<br/><br/>'+title,envelope_style)
+ def door_cell(roman,title):
+  return Paragraph('<font size="28">ŚWIAT '+roman+'</font><br/><br/>'+title,door_style)
+ envelope_rows=[[envelope_cell(*WORLD_TITLES[i]),envelope_cell(*WORLD_TITLES[i+1])]
+                for i in (0,2,4)]
+ labels=textpage('labels',[
+   ('title','ETYKIETY KOPERT — NAZWY ŚWIATÓW'),
+   ('subtitle','Wytnij sześć etykiet i naklej na koperty z pieczęciami i puzzlami.'),
+   ('table',cutout_table(envelope_rows,[130]*3)),
+   ('spacer','12'),
+   ('p','Do każdej koperty włóż pieczęć i dokładnie 10 prawdziwych puzzli. Sześć małych kopert z rezystorami oznaczaj wyłącznie tuszem UV.'),
+ ])
+ # Siedem dużych tabliczek na drzwi: 4 na pierwszej stronie, 3 na drugiej.
+ door_cards=[door_cell(*item) for item in WORLD_TITLES]
+ room_labels=textpage('room_labels',[
+   ('title','TABLICZKI NA DRZWI — SIEDEM ŚWIATÓW'),
+   ('subtitle','Wytnij i przyklej na wejściach do właściwych pomieszczeń.'),
+   ('table',cutout_table([[door_cards[0],door_cards[1]],[door_cards[2],door_cards[3]]],[270,270])),
+   ('pagebreak',''),
+   ('title','TABLICZKI NA DRZWI — SIEDEM ŚWIATÓW'),
+   ('subtitle','Drugi arkusz: światy V–VII.'),
+   ('table',cutout_table([[door_cards[4],door_cards[5]],[door_cards[6],'']],[270,270])),
+ ])
  # Children get the keypad legend on tablets. Print only physical component labels.
  station_names=[
     '1 · ARDUINO UNO\\nMÓZG MASZYNY',
@@ -371,7 +419,8 @@ def build_handouts(dst):
  sections=[]
  def add(title,filename,pages=None,kind='pdf'):
   sections.append((title,filename,pages,kind))
- add('Etykiety kopert',labels)
+ add('Etykiety kopert z nazwami światów',labels)
+ add('Tabliczki na drzwi siedmiu światów',room_labels)
  add('I • Karty bestii',locate('monsters'),None,'image')
  add('I • Pieczęć',seals[1])
  add('II • Trzy lustrzane wiadomości',locate('world2'),[1])
@@ -411,7 +460,7 @@ def build_handouts(dst):
  result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
- generated_names=['_labels.pdf','_enigma_stations.pdf','_seal7.pdf','_world4_discs.pdf','_world4_symbols.pdf',
+ generated_names=['_labels.pdf','_room_labels.pdf','_enigma_stations.pdf','_seal7.pdf','_world4_discs.pdf','_world4_symbols.pdf',
                   '_dyplom_zosia.pdf','_dyplom_emilka.pdf'] + [
                     f'_seal_{number}.pdf' for number in range(1,7)]
  for name in generated_names:
