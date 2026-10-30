@@ -78,3 +78,9 @@ Każda z pierwszych sześciu kopert ze zdobywaną pieczęcią zawiera **dokładn
 Cała gra pracuje tylko w zaufanej sieci domowej, nie publikuj portu 8000 w Internecie. Dorośli sprawdzają elektronikę przy odłączonym zasilaniu. Wirujący silnik z tarczą ma osłonę; tarcze wymienia dorosły dopiero po wyłączeniu i całkowitym zatrzymaniu, mocując je taśmą; nie kierujemy migającego stroboskopu ani światła UV w oczy. Małe elementy nie są przeznaczone do wkładania do ust. Jeśli uczestniczka jest wrażliwa na błyski, zrezygnuj ze stroboskopu i przygotuj alternatywne ujawnienie cyfr.
 
 Repozytorium jest publiczne. Nie zapisuj w nim danych wrażliwych ani haseł z domowych usług.
+
+## Dodatkowe materiały — mapa, etykiety, stroboskop i Chronoskop
+
+Osobne instrukcje i etykiety mają swój katalog [`dodatkowe_instrukcje/`](dodatkowe_instrukcje/README.md). Przygotowano cztery PDF-y do druku: mapę świata, małe etykiety na Chronoskop i Skrzynię Morthara, instrukcję stroboskopu i obrazkową instrukcję maszyny.
+
+PDF-y nie są automatycznie aktualizowane przez GitHub Actions. Do ich jednokrotnego dodania służy `tools/wgraj_dodatkowe_pdf.sh` (opis w katalogu). **Repozytorium jest publiczne: skrypt domyślnie nie publikuje mapy prywatnego domu.**
