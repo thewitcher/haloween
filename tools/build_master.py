@@ -93,7 +93,7 @@ p('Ważne: źródłem prawdy są aktualne etapy aplikacji i ostatnie ustalenia. 
 breakp()
 h('00 · Przygotowania ogólne i uruchomienie')
 hh('Sprzęt i rzeczy do zebrania')
-p('Laptop z Ubuntu i Pythonem 3, domowe Wi-Fi, dwa tablety (Strażniczka I = Zosia, Strażniczka II = Emilka), ładowarki, czołówki, nożyczki, taśma papierowa, sześć kopert na pieczęcie, sześć MAŁYCH kopert na rezystory, długopis z tuszem UV i latarką UV, lustro, sześć książek z co najmniej 50 stronami, mikroskop z oświetleniem, jeden silnik DC 3–6 V z osłoną, zasilacz 5 V, opcjonalny wyłącznik, cztery wymienne tarcze 10 cm, taśma klejąca, stroboskop, Arduino UNO z Enigmą, czterocyfrowa kłódka oraz skrzynia.')
+p('Laptop z Ubuntu i Pythonem 3, domowe Wi-Fi, dwa tablety (Strażniczka I = Zosia, Strażniczka II = Emilka), ładowarki, czołówki, nożyczki, taśma papierowa, sześć kopert na pieczęcie, sześć MAŁYCH kopert na rezystory, długopis z tuszem UV i latarką UV, lustro, sześć książek z co najmniej 50 stronami, mikroskop z oświetleniem, jeden silnik DC 3–6 V z osłoną, zasilacz USB 5 V i przewód USB maszyny, cztery wymienne tarcze 10 cm, taśma klejąca, stroboskop, Arduino UNO z Enigmą, czterocyfrowa kłódka oraz skrzynia.')
 p('Materiały: wydrukowane karty i pieczęcie; <b>gotowe, prawdziwe puzzle składające się z dokładnie 60 elementów</b> (jeden komplet, nie kilka zestawów); dwie sztywne, płaskie tektury lub deski do odwracania układanki; długopis UV i latarka UV; skrzynia z czterocyfrową kłódką; słodycze i dyplomy.')
 hh('Zasilanie i bezpieczeństwo')
 p('Elektronikę montuje dorosły i kontroluje przy odłączonym zasilaniu. Nie używaj napięcia sieciowego na odsłoniętych przewodach. W eksperymencie ze stroboskopem nie kieruj błysków w oczy; przy nadwrażliwości na światło stosuj wariant bez stroboskopu. Ruchome tarcze osłoń. Mikroskop, UV i małe rezystory używaj pod nadzorem; nie świeć UV w oczy i nie pozwalaj wkładać drobnych elementów do ust. Nie chowaj kopert przy gniazdkach ani ostrych narzędziach.')
@@ -137,11 +137,11 @@ breakp()
 h('04 · GABINET — Mechanizm Zatrzymanego Czasu')
 hh('Ustaw urządzenie wcześniej')
 p('Przygotuj <b>jeden osłonięty silnik 3–6 V zasilany bezpośrednio z 5 V</b> i cztery wymienne tarcze o średnicy 10 cm. Wytnij symbole z arkusza i <b>przyklej po jednym na odwrocie właściwej tarczy</b>: <b>KSIĘŻYC = 7</b>, <b>KRUK = 2</b>, <b>KLUCZ = 9</b>, <b>KLEPSYDRA = 4</b>. Drukuj w skali 100%. Tarcze muszą być wyważone i pewnie zamocowane taśmą. Przed każdą wymianą wyłącz zasilanie i poczekaj na całkowite zatrzymanie.')
-p('Silnik został sprawdzony z bezpośrednim zasilaniem <b>5 V</b>. W Świecie IV <b>nie używamy NodeMCU ani L298N</b>. Proste połączenie: <b>+5 V zasilacza → [opcjonalny wyłącznik] → + silnika; – silnika → GND zasilacza</b>. Użyj zasilacza 5 V o wydajności prądowej wystarczającej również podczas rozruchu oraz wyłącznika o odpowiednich parametrach. Przewody zabezpiecz przed zwarciem. Bez wyłącznika dorosły odłącza zasilanie przed każdą wymianą.')
+p('Podłącz sprawdzony <b>zasilacz USB 5 V</b> do gniazdka. <b>Włączenie silnika:</b> dorosły wkłada wtyk USB przewodu maszyny do zasilacza. <b>Wyłączenie:</b> dorosły wyciąga wtyk USB z zasilacza i czeka na pełne zatrzymanie tarczy. Wymiana tarczy odbywa się wyłącznie przy wyjętym wtyku USB. Używaj zasilacza o parametrach odpowiednich dla silnika i zabezpiecz przewód przed zahaczeniem.')
 hh('Zagadki i wynik')
 p('Strażniczka I wybiera tarczę, <b>sprawdza symbol na odwrocie</b>, a dorosły mocuje ją taśmą na nieruchomym silniku i zamyka osłonę. Po uruchomieniu odczytują cyfrę stroboskopem, zapisują parę symbol–cyfra, wyłączają silnik i <b>czekają na pełne zatrzymanie przed wymianą tarczy</b>. Powtarzają to dla czterech tarcz. Strażniczka II układa symbole według wskazówek w aplikacji: <b>KSIĘŻYC → KRUK → KLUCZ → KLEPSYDRA</b>; kod <b>7294</b>. Kolejność wymiany tarcz nie ma znaczenia.')
 p('Kopertę <b>IV</b> z pieczęcią <b>CZAS-604</b> i 10 puzzlami schowaj <b>w szufladzie biurka w gabinecie</b>. Jeżeli zabawa stroboskopem jest niewskazana, dorosły powinien przygotować bezpieczny zastępczy sposób ujawnienia tych samych cyfr. Nie kieruj błysków w oczy.')
-p('□ Jeden silnik pracuje bezpośrednio z 5 V (bez MCU), z osłoną. □ Opcjonalny wyłącznik sprawdzony. □ Cztery tarcze i symbole na odwrotach gotowe. □ Taśma mocująca, wyłączanie i pełne zatrzymanie przed wymianą sprawdzone. □ Stroboskop przetestowany. □ Koperta IV z 10 puzzlami w szufladzie.')
+p('□ Jeden osłonięty silnik 5 V i sprawdzony przewód USB. □ Cztery tarcze i symbole na odwrotach gotowe. □ Włączanie i wyłączanie przez wtyk USB przetestowane. □ Wymiana wyłącznie po pełnym zatrzymaniu. □ Stroboskop przetestowany. □ Koperta IV z 10 puzzlami w szufladzie.')
 breakp()
 h('05 · POKÓJ EMILKI — Biblioteka Zapomnianych Imion')
 p('Przygotuj sześć książek liczących co najmniej 50 stron. Każdą oznacz papierowym symbolem z drugiego PDF-u. Na stronie prawdziwej napisz UV właściwą literę (lub „NA”); na fałszywej — mylący znak. Nie odsłaniaj imienia Morweny przed rozwiązaniem.')
@@ -174,7 +174,7 @@ breakp()
 h('LISTA OSTATECZNA · przed wpuszczeniem dzieci')
 G.append(tbl([['Sprawdź','Stan'],['Dwa tablety + Wi-Fi + zsynchronizowany serwer','□'],['Przygotowane stanowiska, sprzęt i zasilanie','□'],['Sześć kart bestii w salonie','□'],['Trzy lustrzane kartki w sypialni','□'],['Działająca Enigma Morse’a w kuchni','□'],['Jeden silnik 5 V + cztery tarcze, taśma i osłona','□'],['Sześć ksiąg UV + długopis w piórniku','□'],['Sześć kopert rezystorów + mikroskop','□'],['Sześć kopert I–VI zawiera pieczęć i 10 puzzli','□'],['Skrzynia z kłódką 1987, listem, WOLNOŚĆ i nagrodami','□'],['Wszystkie 60 puzzli mają jedną wspólną wiadomość UV','□'],['Stare testowe dane gry zresetowano PRZED startem','□']], [435,70]));gap(10)
 quote('OSTATNIA PRÓBA: uruchom obu Strażniczek w trybie testowym i sprawdź fizycznie wszystkie kryjówki, kody, rewers UV, jakość mikroskopu i działanie zamka. Nie resetuj ani nie zmieniaj materiałów, gdy dzieci już grają.')
-p('Uwaga: w Świecie IV silnik jest zasilany bezpośrednio z 5 V i nie wymaga mikrokontrolera. Arduino UNO pozostaje potrzebne wyłącznie w Świecie III. Ustalony komplet 60 puzzli i finał WOLNOŚĆ zastępują dawne warianty zakończenia. Sam dokument nie potwierdza, czy fizyczne układy są już poprawnie zmontowane — wymagana jest próba sprzętowa.')
+p('Uwaga: w Świecie IV silnik jest zasilany przez przewód USB z zasilacza 5 V. Arduino UNO jest używane w Świecie III. Ustalony komplet 60 puzzli i finał WOLNOŚĆ zastępują dawne warianty zakończenia. Sam dokument nie potwierdza, czy fizyczne układy są już poprawnie zmontowane — wymagana jest próba sprzętowa.')
 
 def build_guide(dst):
  doc=SimpleDocTemplate(str(dst),pagesize=A4,rightMargin=MARGIN,leftMargin=MARGIN,topMargin=47,bottomMargin=44,title='Klątwa Siedmiu Światów - instrukcja organizatora',author='Instrukcja gry domowej')
@@ -333,7 +333,38 @@ def mirror_world4_discs_in_print_pack(document):
      'WZORY ODBITE LUSTRZANIE — dla ustalonego kierunku obrotów',
      fontsize=8.2,color=(.15,.13,.2),overlay=True)
 
+# Siedem dodatkowych stron jest przechowywanych wewnątrz jednego głównego PDF-u.
+# Po pierwszym przesłaniu kompletnego PDF-u na GitHuba generator zachowuje te
+# strony przy każdej następnej aktualizacji pozostałych materiałów.
+SUPPLEMENT_TITLES = [
+ 'MAPA SIEDMIU ŚWIATÓW',
+ 'ETYKIETY NA REKWIZYTY',
+ 'STROBOSKOP — OBSŁUGA EKRANU',
+ 'STROBOSKOP — PRÓBA TARCZY',
+ 'CHRONOSKOP ZEGARMISTRZA',
+ 'CHRONOSKOP — MOCOWANIE TARCZY',
+ 'CHRONOSKOP — OBSŁUGA',
+]
+
+def load_supplements_from_master(master_path):
+ if not master_path.is_file():
+  return None
+ with fitz.open(master_path) as previous:
+  indices=[]
+  for heading in SUPPLEMENT_TITLES:
+   matches=[i for i,page in enumerate(previous) if heading in page.get_text()]
+   if len(matches)!=1:
+    return None
+   indices.append(matches[0])
+  doc=fitz.open()
+  for idx in indices:
+   doc.insert_pdf(previous,from_page=idx,to_page=idx)
+  return doc
+
 def build_handouts(dst):
+ supplement=load_supplements_from_master(dst)
+ if supplement is None:
+  raise RuntimeError('Brak 7 stron dodatkowych w Materialy_do_druku.pdf. Najpierw wgraj do repozytorium kompletny 34-stronicowy PDF otrzymany w rozmowie; generator zachowa mapę, etykiety i instrukcje przy następnych aktualizacjach.')
  def textpage(filename,parts,tag='DO WYDRUKU'):
   arr=[]
   for typ,t in parts:
@@ -481,6 +512,16 @@ def build_handouts(dst):
   pages=indices if indices is not None else list(range(len(doc2)))
   for no in pages:result.insert_pdf(doc2,from_page=no,to_page=no)
   bookmarks.append([1,title,first]);doc2.close()
+  if title=='Tabliczki na drzwi siedmiu światów':
+   result.insert_pdf(supplement,from_page=0,to_page=1)
+   bookmarks.extend([[1,'Mapa siedmiu światów',len(result)-1],[1,'Etykiety Chronoskopu i Skrzyni',len(result)]])
+  elif title=='IV • Symbole do przyklejenia na odwrotach':
+   for index,heading in enumerate(SUPPLEMENT_TITLES[2:],2):
+    first_extra=len(result)+1
+    result.insert_pdf(supplement,from_page=index,to_page=index)
+    bookmarks.append([1,heading,first_extra])
+ supplement.close()
+ assert len(result)==34,f'Pakiet powinien mieć 34 strony, ma {len(result)}'
  # Normalize pagination after merging legacy source PDFs.
  for no,pg in enumerate(result,1):
   pg.add_redact_annot(fitz.Rect(440,814,587,842),fill=(1,1,1))
@@ -488,7 +529,7 @@ def build_handouts(dst):
   pg.insert_text((481,831),f'Strona {no} / {len(result)}',fontsize=8,color=(0.37,0.34,0.43))
  result.set_toc(bookmarks)
  mirror_world4_discs_in_print_pack(result)
- result.set_metadata({'title':'Klątwa Siedmiu Światów — wyłącznie rekwizyty do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
+ result.set_metadata({'title':'Klątwa Siedmiu Światów — materiały i instrukcje do druku','author':'Kreatywny escape room — dokumentacja finałowa','keywords':'Siedem światów, puzzle, karty, pieczęcie, Zosia, Emilka'})
  result.save(str(dst),garbage=4,deflate=True)
  result.close()
  generated_names=['_labels.pdf','_room_labels.pdf','_enigma_stations.pdf','_seal7.pdf','_world4_discs.pdf','_world4_symbols.pdf',
